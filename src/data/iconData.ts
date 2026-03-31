@@ -23,7 +23,9 @@ export const iconsData: IconData[] = [
     url: "https://linkedin.com/in/",
     color: "#ffffff",
     hoverColor: "#0A66C2"
-  },
+  }
+  /*
+  ,
   {
     id: "twitter",
     name: "Twitter",
@@ -47,7 +49,7 @@ export const iconsData: IconData[] = [
     url: "https://youtube.com/",
     color: "#ffffff",
     hoverColor: "#FF0000"
-  }
+  }  */
 ];
 
 export const getIconUrl = (platform: string): string => {

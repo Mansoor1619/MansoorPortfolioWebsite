@@ -65,7 +65,7 @@ const Hero: React.FC = () => {
             <img
               src={personalData.avatar}
               alt={personalData.name}
-              className="w-40 h-40 rounded-full mx-auto border-4 border-teal-500 shadow-2xl animate-float relative z-10 object-cover object-[center_20%]"
+              className="w-70 h-70 rounded-full mx-auto border-4 border-teal-500 shadow-2xl animate-float relative z-10 object-cover object-[center_20%]"
             />
           </div>
           
@@ -160,7 +160,7 @@ const Hero: React.FC = () => {
       </div>
       
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer" onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-80 animate-bounce cursor-pointer" onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>
         <div className="w-6 h-10 border-2 border-gray-500 rounded-full flex justify-center">
           <div className="w-1 h-2 bg-teal-500 rounded-full mt-2 animate-scroll"></div>
         </div>

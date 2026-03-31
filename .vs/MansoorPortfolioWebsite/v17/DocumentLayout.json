@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "D:\\Github\\MansoorPortfolioWebsite\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Github\\MansoorPortfolioWebsite\\src\\components\\Footer.tsx||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\Footer.tsx||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Github\\MansoorPortfolioWebsite\\src\\components\\Hero.tsx||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\Hero.tsx||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Github\\MansoorPortfolioWebsite\\src\\data\\iconData.ts||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\data\\iconData.ts||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Github\\MansoorPortfolioWebsite\\src\\components\\Projects.tsx||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\Projects.tsx||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
@@ -22,11 +34,50 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Footer.tsx",
+              "DocumentMoniker": "D:\\Github\\MansoorPortfolioWebsite\\src\\components\\Footer.tsx",
+              "RelativeDocumentMoniker": "src\\components\\Footer.tsx",
+              "ToolTip": "D:\\Github\\MansoorPortfolioWebsite\\src\\components\\Footer.tsx",
+              "RelativeToolTip": "src\\components\\Footer.tsx",
+              "ViewState": "AgIAADYAAAAAAAAAAAAAAEIAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-03-31T06:47:21.598Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "iconData.ts",
+              "DocumentMoniker": "D:\\Github\\MansoorPortfolioWebsite\\src\\data\\iconData.ts",
+              "RelativeDocumentMoniker": "src\\data\\iconData.ts",
+              "ToolTip": "D:\\Github\\MansoorPortfolioWebsite\\src\\data\\iconData.ts",
+              "RelativeToolTip": "src\\data\\iconData.ts",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAACsAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-03-31T06:15:01.994Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Hero.tsx",
+              "DocumentMoniker": "D:\\Github\\MansoorPortfolioWebsite\\src\\components\\Hero.tsx",
+              "RelativeDocumentMoniker": "src\\components\\Hero.tsx",
+              "ToolTip": "D:\\Github\\MansoorPortfolioWebsite\\src\\components\\Hero.tsx",
+              "RelativeToolTip": "src\\components\\Hero.tsx",
+              "ViewState": "AgIAAIEAAAAAAAAAAAAAAJMAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-03-31T06:14:15.732Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "projectsData.ts",
               "DocumentMoniker": "D:\\Github\\MansoorPortfolioWebsite\\src\\data\\projectsData.ts",
               "RelativeDocumentMoniker": "src\\data\\projectsData.ts",
@@ -34,12 +85,11 @@
               "RelativeToolTip": "src\\data\\projectsData.ts",
               "ViewState": "AgIAAAkAAAAAAAAAAAAAABUAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2026-03-31T05:02:01.059Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-31T05:02:01.059Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Projects.tsx",
               "DocumentMoniker": "D:\\Github\\MansoorPortfolioWebsite\\src\\components\\Projects.tsx",
               "RelativeDocumentMoniker": "src\\components\\Projects.tsx",
@@ -52,7 +102,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "personalData.ts",
               "DocumentMoniker": "D:\\Github\\MansoorPortfolioWebsite\\src\\data\\personalData.ts",
               "RelativeDocumentMoniker": "src\\data\\personalData.ts",
@@ -60,8 +110,7 @@
               "RelativeToolTip": "src\\data\\personalData.ts",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2026-03-31T04:49:21.628Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-31T04:49:21.628Z"
             }
           ]
         }
