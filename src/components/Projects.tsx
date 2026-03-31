@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { projectsData } from '../data/projectsData';
-import { ExternalLink,Play, Pause, Maximize2, Calendar, Tag, Globe } from 'lucide-react';
+import { Play, Pause, Maximize2, Calendar, Tag } from 'lucide-react';
 
 const Projects: React.FC = () => {
   const [hoveredVideo, setHoveredVideo] = useState<number | null>(null);
