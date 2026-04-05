@@ -3,6 +3,8 @@ import { Download, ChevronDown, Sparkles, Code2, Gamepad2, Layers } from 'lucide
 import { personalData } from '../data/personalData';
 import { iconsData } from '../data/iconData';
 
+
+
 const Hero: React.FC = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [textIndex, setTextIndex] = useState(0);
@@ -33,6 +35,7 @@ const Hero: React.FC = () => {
     ['github', 'linkedin', 'twitter', 'artstation'].includes(icon.id)
   );
 
+  
   return (
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-gray-950 via-gray-900 to-black">
       {/* Animated Gradient Background */}
@@ -47,7 +50,7 @@ const Hero: React.FC = () => {
         ></div>
         <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
         
-        {/* Grid Pattern */}
+        {/* Grid Pattern */} \
         <div className="absolute inset-0 bg-[linear-gradient(rgba(45,212,191,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(45,212,191,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
       </div>
       
@@ -157,7 +160,7 @@ const Hero: React.FC = () => {
             </a>
           </div>
         </div>
-      </div>
+      </div> 
       
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-80 animate-bounce cursor-pointer" onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>
@@ -176,8 +179,8 @@ const Hero: React.FC = () => {
       <div className="absolute top-1/3 right-20 opacity-20 animate-float-slow animation-delay-4000">
         <Layers size={48} className="text-purple-500" />
       </div>
-    </section>
+    </section> 
   );
-};
+}; 
 
-export default Hero;
+export default Hero; 
