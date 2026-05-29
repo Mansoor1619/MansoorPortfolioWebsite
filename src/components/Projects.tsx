@@ -33,8 +33,17 @@ const Projects: React.FC = () => {
     const video = videoRef.current;
     if (!video) return;
 
-    const onPlay = () => setVideoPlaying(true);
-    const onPause = () => setVideoPlaying(false);
+    clearInterval(autoPlayRef.current);
+
+    const onPlay = () => {
+      setVideoPlaying(true);
+      clearInterval(autoPlayRef.current);
+    };
+    const onPause = () => {
+      setVideoPlaying(false);
+      clearInterval(autoPlayRef.current);
+      autoPlayRef.current = setInterval(goNext, 6000);
+    };
     video.addEventListener('play', onPlay);
     video.addEventListener('pause', onPause);
 
@@ -44,15 +53,11 @@ const Projects: React.FC = () => {
 
     return () => {
       clearTimeout(timer);
+      clearInterval(autoPlayRef.current);
       video.removeEventListener('play', onPlay);
       video.removeEventListener('pause', onPause);
     };
-  }, [currentIndex]);
-
-  useEffect(() => {
-    autoPlayRef.current = setInterval(goNext, 6000);
-    return () => clearInterval(autoPlayRef.current);
-  }, [goNext]);
+  }, [currentIndex, goNext]);
 
   const toggleVideo = () => {
     const video = videoRef.current;
@@ -61,7 +66,6 @@ const Projects: React.FC = () => {
       video.play();
     } else {
       video.pause();
-      clearInterval(autoPlayRef.current);
     }
   };
 
