@@ -100,8 +100,8 @@ const Hero: React.FC = () => {
 
           {/* Profile Image */}
           <div className="mb-8 relative flex justify-center">
-            <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-600 rounded-full blur-lg opacity-75 animate-glow-pulse"></div>
-            <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-600 rounded-full animate-spin opacity-30" style={{ animationDuration: '6s' }}></div>
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-600 rounded-full blur opacity-75 animate-glow-pulse"></div>
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-600 rounded-full animate-spin opacity-30" style={{ animationDuration: '6s' }}></div>
             <img
               src={personalData.avatar}
               alt={personalData.name}
