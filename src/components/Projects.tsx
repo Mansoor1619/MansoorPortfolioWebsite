@@ -99,54 +99,70 @@ const Projects: React.FC = () => {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.4, ease: 'easeInOut' }}
-                className="relative aspect-video bg-gray-900"
               >
-                <video
-                  ref={videoRef}
-                  className="w-full h-full object-cover"
-                  poster={project.thumbnail}
-                  loop
-                  muted
-                  playsInline
-                  onClick={toggleVideo}
-                >
-                  <source src={project.videoUrl} type="video/mp4" />
-                </video>
+                {/* Video */}
+                <div className="relative aspect-video bg-gray-900 rounded-2xl overflow-hidden">
+                  <video
+                    ref={videoRef}
+                    className="w-full h-full object-cover"
+                    poster={project.thumbnail}
+                    loop
+                    muted
+                    playsInline
+                    onClick={toggleVideo}
+                  >
+                    <source src={project.videoUrl} type="video/mp4" />
+                  </video>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/30 to-transparent pointer-events-none"></div>
+                  {/* Desktop gradient overlay */}
+                  <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/30 to-transparent pointer-events-none"></div>
 
-                <div onClick={toggleVideo} className="absolute inset-0 flex items-center justify-center cursor-pointer group">
-                  {!videoPlaying && (
-                    <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
-                      <Play size={28} className="text-white ml-1 fill-white" />
-                    </div>
-                  )}
-                </div>
+                  <div onClick={toggleVideo} className="absolute inset-0 flex items-center justify-center cursor-pointer group">
+                    {!videoPlaying && (
+                      <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
+                        <Play size={28} className="text-white ml-1 fill-white" />
+                      </div>
+                    )}
+                  </div>
 
-                <div className="absolute top-5 left-5 flex gap-2 pointer-events-none">
-                  <span className="px-3 py-1.5 bg-gradient-to-r from-teal-500 to-blue-600 text-white text-xs font-semibold rounded-full flex items-center gap-1 shadow-lg">
-                    <Tag size={11} />
-                    {project.category}
-                  </span>
-                  {project.year && (
-                    <span className="px-3 py-1.5 bg-black/60 backdrop-blur-md text-white text-xs font-medium rounded-full flex items-center gap-1">
-                      <Calendar size={11} />
-                      {project.year}
+                  <div className="absolute top-5 left-5 flex gap-2 pointer-events-none">
+                    <span className="px-3 py-1.5 bg-gradient-to-r from-teal-500 to-blue-600 text-white text-xs font-semibold rounded-full flex items-center gap-1 shadow-lg">
+                      <Tag size={11} />
+                      {project.category}
                     </span>
-                  )}
+                    {project.year && (
+                      <span className="px-3 py-1.5 bg-black/60 backdrop-blur-md text-white text-xs font-medium rounded-full flex items-center gap-1">
+                        <Calendar size={11} />
+                        {project.year}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Desktop overlay content */}
+                  <div className="hidden md:block absolute bottom-0 left-0 right-0 p-8 pointer-events-none">
+                    <h3 className="text-3xl font-bold text-white mb-2">{project.title}</h3>
+                    <p className="text-gray-400 text-base max-w-2xl line-clamp-2">{project.description}</p>
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      {project.techStack.slice(0, 5).map((tech, idx) => (
+                        <span key={idx} className="px-3 py-1 bg-white/10 text-gray-300 text-xs font-medium rounded-md backdrop-blur-sm">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
-                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 pointer-events-none">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{project.title}</h3>
-                  <p className="text-gray-400 text-sm md:text-base max-w-2xl line-clamp-2">{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {project.techStack.slice(0, 5).map((tech, idx) => (
-                      <span key={idx} className="px-3 py-1 bg-white/10 text-gray-300 text-xs font-medium rounded-md backdrop-blur-sm">
+                {/* Mobile content below video */}
+                <div className="block md:hidden glass-card rounded-b-2xl p-5 -mt-2">
+                  <h3 className="text-lg font-bold text-white mb-2">{project.title}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">{project.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.techStack.slice(0, 4).map((tech, idx) => (
+                      <span key={idx} className="px-2.5 py-1 bg-white/5 text-teal-400 text-xs font-medium rounded-md border border-white/10">
                         {tech}
                       </span>
                     ))}
                   </div>
-
                 </div>
               </motion.div>
             </AnimatePresence>
