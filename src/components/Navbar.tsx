@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="flex-shrink-0 group">
             <h1 className="text-2xl md:text-3xl font-bold gradient-text tracking-tight">
-              Muhammad Mansoor
+              Mansoor
             </h1>
           </div>
 
