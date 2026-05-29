@@ -99,13 +99,13 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Profile Image */}
-          <div className="mb-8 relative flex justify-center">
+          <div className="mb-8 relative inline-block">
             <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-600 rounded-full blur-lg opacity-75 animate-glow-pulse"></div>
             <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-600 rounded-full animate-spin opacity-30" style={{ animationDuration: '6s' }}></div>
             <img
               src={personalData.avatar}
               alt={personalData.name}
-              className="w-64 h-64 md:w-72 md:h-72 rounded-full block relative z-10 object-cover object-[center_20%] border-2 border-white/10"
+              className="w-64 h-64 md:w-72 md:h-72 rounded-full mx-auto relative z-10 object-cover object-[center_20%] border-2 border-white/10"
             />
           </div>
 
