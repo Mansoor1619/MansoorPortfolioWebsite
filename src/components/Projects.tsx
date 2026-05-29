@@ -1,184 +1,187 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { projectsData } from '../data/projectsData';
-import { Play, Pause, Maximize2, Calendar, Tag } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, Tag, Play } from 'lucide-react';
+
+const slideVariants = {
+  enter: (direction: number) => ({ x: direction > 0 ? 300 : -300, opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (direction: number) => ({ x: direction > 0 ? -300 : 300, opacity: 0 }),
+};
 
 const Projects: React.FC = () => {
-  const [hoveredVideo, setHoveredVideo] = useState<number | null>(null);
-  const [expandedProject, setExpandedProject] = useState<number | null>(null);
-  const videoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
+  const [[currentIndex, direction], setPage] = useState([0, 0]);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const autoPlayRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
-  // Handle video play on hover
-  const handleVideoHover = (id: number, isHovering: boolean) => {
-    const video = videoRefs.current[id];
-    if (video) {
-      if (isHovering) {
-        // Pause any other playing video
-        if (hoveredVideo !== null && hoveredVideo !== id) {
-          const prevVideo = videoRefs.current[hoveredVideo];
-          if (prevVideo) {
-            prevVideo.pause();
-          }
-        }
-        video.play();
-        setHoveredVideo(id);
-      } else {
-        video.pause();
-        video.currentTime = 0; // Reset to beginning
-        setHoveredVideo(null);
-      }
+  const project = projectsData[currentIndex];
+
+  const goNext = useCallback(() => {
+    setPage(([prev]) => [(prev + 1) % projectsData.length, 1]);
+  }, []);
+
+  const goPrev = useCallback(() => {
+    setPage(([prev]) => [(prev - 1 + projectsData.length) % projectsData.length, -1]);
+  }, []);
+
+  const goTo = useCallback((index: number) => {
+    setPage([index, index > currentIndex ? 1 : -1]);
+  }, [currentIndex]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const onPlay = () => setVideoPlaying(true);
+    const onPause = () => setVideoPlaying(false);
+    video.addEventListener('play', onPlay);
+    video.addEventListener('pause', onPause);
+
+    const timer = setTimeout(() => {
+      video.play().catch(() => {});
+    }, 400);
+
+    return () => {
+      clearTimeout(timer);
+      video.removeEventListener('play', onPlay);
+      video.removeEventListener('pause', onPause);
+    };
+  }, [currentIndex]);
+
+  useEffect(() => {
+    autoPlayRef.current = setInterval(goNext, 6000);
+    return () => clearInterval(autoPlayRef.current);
+  }, [goNext]);
+
+  const toggleVideo = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+      clearInterval(autoPlayRef.current);
     }
   };
 
-  const setVideoRef = (id: number) => (el: HTMLVideoElement | null) => {
-    videoRefs.current[id] = el;
-  };
-
-  // Preload videos
   useEffect(() => {
-    Object.values(videoRefs.current).forEach(video => {
-      if (video) {
-        video.load();
-      }
-    });
-  }, []);
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') goNext();
+      if (e.key === 'ArrowLeft') goPrev();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [goNext, goPrev]);
 
   return (
-    <section id="projects" className="py-24 bg-gradient-to-b from-gray-900 to-black">
+    <section id="projects" className="relative py-24 bg-[#050505]">
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-teal-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
         <div className="text-center mb-16">
-          <div className="inline-block mb-4">
-            <span className="px-4 py-2 bg-teal-500/10 rounded-full text-teal-400 text-sm font-medium border border-teal-500/20">
-              My Portfolio
-            </span>
-          </div>
+          <span className="text-teal-400 text-sm font-medium tracking-widest uppercase mb-2 block">Portfolio</span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Featured <span className="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">Projects</span>
+            Featured <span className="gradient-text">Projects</span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-teal-400 to-blue-500 mx-auto rounded-full"></div>
-          <p className="text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
-            Explore my latest Unreal Engine projects showcasing cutting-edge graphics, immersive experiences, and technical excellence
-          </p>
+          <div className="w-20 h-0.5 bg-gradient-to-r from-teal-400 to-blue-500 mx-auto rounded-full"></div>
         </div>
-        
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
-          {projectsData.map((project) => (
-            <div
-              key={project.id}
-              className={`group bg-gray-800/50 backdrop-blur-sm rounded-2xl overflow-hidden hover:transform hover:scale-[1.02] transition-all duration-500 shadow-xl hover:shadow-2xl border border-gray-700/50 hover:border-teal-500/30 ${
-                expandedProject === project.id ? 'md:col-span-2' : ''
-              }`}
-            >
-              {/* Video Container */}
-              <div 
-                className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden cursor-pointer"
-                onMouseEnter={() => handleVideoHover(project.id, true)}
-                onMouseLeave={() => handleVideoHover(project.id, false)}
+
+        <div className="relative max-w-5xl mx-auto">
+          <div className="overflow-hidden rounded-2xl">
+            <AnimatePresence initial={false} custom={direction} mode="wait">
+              <motion.div
+                key={currentIndex}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.4, ease: 'easeInOut' }}
+                className="relative aspect-video bg-gray-900"
               >
                 <video
-                  ref={setVideoRef(project.id)}
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                  ref={videoRef}
+                  className="w-full h-full object-cover"
                   poster={project.thumbnail}
                   loop
                   muted
                   playsInline
-                  preload="metadata"
+                  onClick={toggleVideo}
                 >
                   <source src={project.videoUrl} type="video/mp4" />
                 </video>
-                
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
-                {/* Play/Pause Indicator */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <div className="bg-black/70 backdrop-blur-md rounded-full p-4 transform scale-90 group-hover:scale-100 transition-transform duration-300">
-                    {hoveredVideo === project.id ? (
-                      <Pause className="w-8 h-8 text-white" />
-                    ) : (
-                      <Play className="w-8 h-8 text-white ml-0.5" />
-                    )}
-                  </div>
+
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/30 to-transparent pointer-events-none"></div>
+
+                <div onClick={toggleVideo} className="absolute inset-0 flex items-center justify-center cursor-pointer group">
+                  {!videoPlaying && (
+                    <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
+                      <Play size={28} className="text-white ml-1 fill-white" />
+                    </div>
+                  )}
                 </div>
-                
-                {/* Category Badge */}
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1.5 bg-gradient-to-r from-teal-500 to-blue-600 text-white text-xs font-semibold rounded-full shadow-lg flex items-center gap-1">
-                    <Tag size={12} />
+
+                <div className="absolute top-5 left-5 flex gap-2 pointer-events-none">
+                  <span className="px-3 py-1.5 bg-gradient-to-r from-teal-500 to-blue-600 text-white text-xs font-semibold rounded-full flex items-center gap-1 shadow-lg">
+                    <Tag size={11} />
                     {project.category}
                   </span>
-                </div>
-                
-                {/* Year Badge (if available) */}
-                {project.year && (
-                  <div className="absolute top-4 right-4">
+                  {project.year && (
                     <span className="px-3 py-1.5 bg-black/60 backdrop-blur-md text-white text-xs font-medium rounded-full flex items-center gap-1">
-                      <Calendar size={12} />
+                      <Calendar size={11} />
                       {project.year}
                     </span>
-                  </div>
-                )}
-                
-                {/* Expand Button */}
-                <button
-                  onClick={() => setExpandedProject(expandedProject === project.id ? null : project.id)}
-                  className="absolute bottom-4 right-4 p-2 bg-black/60 backdrop-blur-md rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-teal-500"
-                >
-                  <Maximize2 size={16} className="text-white" />
-                </button>
-              </div>
-              
-              {/* Content */}
-              <div className="p-6 lg:p-8">
-                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-teal-400 transition-colors duration-300">
-                  {project.title}
-                </h3>
-                <p className="text-gray-400 mb-4 leading-relaxed">
-                  {project.description}
-                </p>
-                
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.techStack.map((tech, idx) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1.5 bg-gray-700/50 text-teal-400 text-xs font-medium rounded-full border border-teal-500/20 hover:border-teal-500/50 transition-all duration-300"
-                    >
-                      {tech}
-                    </span>
-                  ))}
+                  )}
                 </div>
-                
-                {/* Links and Stats */} 
-         {/*     <div className="flex items-center justify-between flex-wrap gap-4 pt-4 border-t border-gray-700"> 
-                  <div className="flex space-x-4">
-                    {project.liveLink && (
-                      <a
-                        href={project.liveLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300"
-                      >
-                        <ExternalLink size={16} />
-                        Live Demo
-                      </a>
-                    )}
-                    {project.githubLink && (
-                      <a
-                        href={project.githubLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-gray-700 text-gray-300 text-sm font-medium rounded-lg hover:bg-teal-500 hover:text-white transition-all duration-300"
-                      >
-                        <Globe size={16} />
-                        Source Code
-                      </a>
-                    )}
+
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 pointer-events-none">
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{project.title}</h3>
+                  <p className="text-gray-400 text-sm md:text-base max-w-2xl line-clamp-2">{project.description}</p>
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {project.techStack.slice(0, 5).map((tech, idx) => (
+                      <span key={idx} className="px-3 py-1 bg-white/10 text-gray-300 text-xs font-medium rounded-md backdrop-blur-sm">
+                        {tech}
+                      </span>
+                    ))}
                   </div>
-                </div>       */}
-              </div>
-            </div>
-          ))}
+
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <button
+            onClick={goPrev}
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/60 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-teal-500 transition-all duration-300 cursor-pointer z-10"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            onClick={goNext}
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/60 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-teal-500 transition-all duration-300 cursor-pointer z-10"
+          >
+            <ChevronRight size={20} />
+          </button>
+
+          <div className="flex justify-center items-center gap-2.5 mt-8">
+            {projectsData.map((p, idx) => (
+              <button
+                key={p.id}
+                onClick={() => goTo(idx)}
+                className={`transition-all duration-300 rounded-full cursor-pointer ${
+                  idx === currentIndex
+                    ? 'w-8 h-2.5 bg-gradient-to-r from-teal-500 to-blue-600'
+                    : 'w-2.5 h-2.5 bg-white/20 hover:bg-white/40'
+                }`}
+              />
+            ))}
+          </div>
+
+          <div className="text-center mt-3 text-gray-500 text-sm">
+            {String(currentIndex + 1).padStart(2, '0')} / {String(projectsData.length).padStart(2, '0')}
+          </div>
         </div>
       </div>
     </section>

@@ -52,7 +52,7 @@ export const projectsData: Project[] = [
   {
     id: 3,
     title: "VR Car Configurator",
-    category: "Character Animation",
+    category: "Virtual Reality",
     description: "An immersive VR car configurator featuring real-time material changes for exterior and interior, dynamic rim customization, environment switching, and live lighting adjustments - delivering a premium automotive experience in Unreal Engine 5.",
     videoUrl: "/VR_CarConfigurator.mp4",
     thumbnail: "/VRCarConfigurator.png",
@@ -87,7 +87,7 @@ export const projectsData: Project[] = [
   {
     id: 5,
     title: "Paper Throw VR",
-    category: "Tools & Systems",
+    category: "Virtual Reality",
     description: "A physics-driven VR paper toss game built in Unreal Engine 5 with real-time hand tracking, allowing players to crumple, aim, and throw paper balls using natural hand gestures - complete with dynamic scoring and responsive object interaction.",
     videoUrl: "/PaperTossVR.mp4",
     thumbnail: "/PaperThrowVR.png",
@@ -105,7 +105,7 @@ export const projectsData: Project[] = [
   {
     id: 6,
     title: "ARena: Augmented Reality Games",
-    category: "VFX & Simulation",
+    category: "Augmented Reality",
     description: "A multi-game AR experience built in Unreal Engine 5 featuring target shooting, spatial puzzles, and object placement challenges - powered by real-time scoring systems and competitive leaderboards for an engaging augmented reality gameplay collection.",
     videoUrl: "/AR.mp4",
     thumbnail: "/AR.jpg",
@@ -122,7 +122,7 @@ export const projectsData: Project[] = [
     {
     id: 7,
     title: "CarVerse: XR Configurator",
-    category: "VFX & Simulation",
+    category: "XR Development",
     description: "A high-fidelity XR vehicle configurator built in Unreal Engine 5, featuring real-time material and lighting systems for full exterior and interior customization, dynamic rim selection, and seamless environment switching across multiple showroom settings - accessible across both AR and VR platforms.",
     videoUrl: "/XR_CarConfigurator.mp4",
     thumbnail: "/XR.jpg",
@@ -139,7 +139,7 @@ export const projectsData: Project[] = [
     {
     id: 8,
     title: "NeuralFire: AI Shooter Showcase",
-    category: "VFX & Simulation",
+    category: "AI Development",
     description: "A comprehensive AI combat showcase built in Unreal Engine 5 demonstrating production-ready NPC intelligence - featuring Behavior Tree architecture, EQS-driven spatial awareness, realistic patrol systems, precision shooting mechanics, and aggressive adaptive attack behaviors.",
     videoUrl: "/TPS_AI.mp4",
     thumbnail: "/AIShooter.png",
@@ -156,7 +156,7 @@ export const projectsData: Project[] = [
     {
     id: 9,
     title: "PaintballVR: Arena Combat",
-    category: "VFX & Simulation",
+    category: "Virtual Reality",
     description: "A comprehensive VR paintball game built in Unreal Engine 5 featuring multiple combat maps, three distinct game modes (timed, wave survival, one-life elimination), AI-driven opponents with Behavior Trees, a realistic shooting and ammo pickup system, and a fully interactive health and HUD widget system.",
     videoUrl: "/PaintBallVR.mp4",
     thumbnail: "/PaintBallVR.jpg",
