@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="flex-shrink-0 group">
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold gradient-text tracking-tight">
-              <span className={`md:hidden transition-opacity duration-300 ${scrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>Mansoor</span>
+              <span className={`md:hidden transition-opacity duration-300 ${scrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>Muhammad Mansoor</span>
               <span className="hidden md:inline">Muhammad Mansoor</span>
             </h1>
           </div>
