@@ -1,30 +1,24 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { projectsData } from '../data/projectsData';
 import { Play, Pause, Calendar, Tag, ChevronDown, ChevronUp } from 'lucide-react';
 
 const Projects: React.FC = () => {
-  const [hoveredVideo, setHoveredVideo] = useState<number | null>(null);
+  const [playingId, setPlayingId] = useState<number | null>(null);
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const videoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
 
-  const handleVideoHover = (id: number, isHovering: boolean) => {
+  const toggleVideo = useCallback((id: number) => {
     const video = videoRefs.current[id];
-    if (video) {
-      if (isHovering) {
-        if (hoveredVideo !== null && hoveredVideo !== id) {
-          const prevVideo = videoRefs.current[hoveredVideo];
-          if (prevVideo) { prevVideo.pause(); }
-        }
-        video.play();
-        setHoveredVideo(id);
-      } else {
-        video.pause();
-        video.currentTime = 0;
-        setHoveredVideo(null);
-      }
+    if (!video) return;
+    if (video.paused) {
+      video.play();
+      setPlayingId(id);
+    } else {
+      video.pause();
+      setPlayingId(null);
     }
-  };
+  }, []);
 
   const setVideoRef = (id: number) => (el: HTMLVideoElement | null) => {
     videoRefs.current[id] = el;
@@ -63,34 +57,36 @@ const Projects: React.FC = () => {
                 >
                   {/* Video */}
                   <div
-                    className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden"
-                    onMouseEnter={() => handleVideoHover(project.id, true)}
-                    onMouseLeave={() => handleVideoHover(project.id, false)}
+                    className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden cursor-pointer"
+                    onClick={() => toggleVideo(project.id)}
                   >
                     <video
                       ref={setVideoRef(project.id)}
-                      className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+                      className="w-full h-full object-cover"
                       poster={project.thumbnail}
                       loop
                       muted
                       playsInline
                       preload="metadata"
+                      onClick={(e) => { e.stopPropagation(); toggleVideo(project.id); }}
                     >
                       <source src={project.videoUrl} type="video/mp4" />
                     </video>
 
                     {/* Desktop gradient overlay */}
-                    <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent"></div>
+                    <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent pointer-events-none"></div>
 
-                    {/* Play indicator on hover */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <div className="bg-white/10 backdrop-blur-md rounded-full p-5 transform scale-90 group-hover:scale-100 transition-transform duration-500 border border-white/10">
-                        {hoveredVideo === project.id ? (
-                          <Pause className="w-8 h-8 text-white" />
-                        ) : (
-                          <Play className="w-8 h-8 text-white ml-0.5" />
-                        )}
-                      </div>
+                    {/* Play/Pause button overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center transition-all duration-300 pointer-events-none">
+                      {playingId === project.id ? (
+                        <div className="w-14 h-14 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <Pause className="w-6 h-6 text-white fill-white" />
+                        </div>
+                      ) : (
+                        <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 transition-transform duration-300 hover:scale-110">
+                          <Play className="w-7 h-7 text-white ml-0.5 fill-white" />
+                        </div>
+                      )}
                     </div>
 
                     {/* Badges */}
