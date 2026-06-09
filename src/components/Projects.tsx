@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { projectsData } from '../data/projectsData';
-import { Play, Pause, Calendar, Tag, ExternalLink, Code2, ChevronDown, ChevronUp } from 'lucide-react';
+import { Play, Pause, Calendar, Tag, ChevronDown, ChevronUp } from 'lucide-react';
 
 const Projects: React.FC = () => {
   const [hoveredVideo, setHoveredVideo] = useState<number | null>(null);
@@ -41,7 +41,7 @@ const Projects: React.FC = () => {
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-teal-500/5 rounded-full blur-[120px] pointer-events-none"></div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="text-teal-400 text-sm font-medium tracking-widest uppercase mb-2 block">Portfolio</span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
@@ -50,12 +50,12 @@ const Projects: React.FC = () => {
           <div className="w-20 h-0.5 bg-gradient-to-r from-teal-400 to-blue-500 mx-auto rounded-full"></div>
         </div>
 
-        <div className="space-y-10">
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
           {projectsData.map((project) => {
             const isExpanded = expandedId === project.id;
 
             return (
-              <div key={project.id} className="group">
+              <div key={project.id} className={`group ${isExpanded ? 'md:col-span-2' : ''}`}>
                 {/* Main Card */}
                 <div
                   className="project-card rounded-2xl overflow-hidden cursor-pointer"
@@ -63,7 +63,7 @@ const Projects: React.FC = () => {
                 >
                   {/* Video */}
                   <div
-                    className="relative aspect-video md:aspect-[21/9] bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden"
+                    className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden"
                     onMouseEnter={() => handleVideoHover(project.id, true)}
                     onMouseLeave={() => handleVideoHover(project.id, false)}
                   >
@@ -108,12 +108,12 @@ const Projects: React.FC = () => {
                     </div>
 
                     {/* Desktop overlay content */}
-                    <div className="hidden md:block absolute bottom-0 left-0 right-0 p-8">
-                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{project.title}</h3>
-                      <p className="text-gray-400 text-sm md:text-base max-w-2xl line-clamp-2">{project.description}</p>
-                      <div className="flex flex-wrap gap-2 mt-4">
+                    <div className="hidden md:block absolute bottom-0 left-0 right-0 p-6">
+                      <h3 className="text-xl font-bold text-white mb-1.5">{project.title}</h3>
+                      <p className="text-gray-400 text-sm max-w-2xl line-clamp-2">{project.description}</p>
+                      <div className="flex flex-wrap gap-2 mt-3">
                         {project.techStack.slice(0, 4).map((tech, idx) => (
-                          <span key={idx} className="px-3 py-1 bg-white/10 text-gray-300 text-xs font-medium rounded-md backdrop-blur-sm">
+                          <span key={idx} className="px-2.5 py-1 bg-white/10 text-gray-300 text-xs font-medium rounded-md backdrop-blur-sm">
                             {tech}
                           </span>
                         ))}
@@ -121,8 +121,8 @@ const Projects: React.FC = () => {
                     </div>
 
                     {/* Expand indicator */}
-                    <div className="absolute bottom-4 right-6 text-gray-500 group-hover:text-teal-400 transition-colors duration-300 hidden md:block">
-                      {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    <div className="absolute bottom-3 right-4 text-gray-500 group-hover:text-teal-400 transition-colors duration-300 hidden md:block">
+                      {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                     </div>
                   </div>
 
@@ -151,59 +151,22 @@ const Projects: React.FC = () => {
                       className="overflow-hidden"
                     >
                       <div className="glass-card rounded-b-2xl p-6 md:p-8 -mt-1 border-t-0">
-                        <div className="grid md:grid-cols-2 gap-8">
-                          <div>
-                            <h4 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">
-                              About this project
-                            </h4>
-                            <p className="text-gray-400 text-sm leading-relaxed">
-                              {project.description}
-                            </p>
-                            {project.achievements && (
-                              <div className="mt-6">
-                                <h4 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">
-                                  Achievements
-                                </h4>
-                                <ul className="space-y-2">
-                                  {project.achievements.map((a, i) => (
-                                    <li key={i} className="flex items-start gap-2 text-gray-400 text-sm">
-                                      <span className="text-teal-400 mt-0.5">&#8226;</span>
-                                      {a}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-                          </div>
-
-                          <div>
-                            <h4 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">
-                              Tech Stack
-                            </h4>
-                            <div className="flex flex-wrap gap-2 mb-8">
-                              {project.techStack.map((tech, idx) => (
-                                <span key={idx} className="px-3 py-1.5 bg-white/5 text-teal-400 text-xs font-medium rounded-md border border-white/10">
-                                  {tech}
-                                </span>
-                              ))}
-                            </div>
-
-                            <div className="flex gap-3">
-                              {project.liveLink && (
-                                <a href={project.liveLink} target="_blank" rel="noopener noreferrer"
-                                  onClick={(e) => e.stopPropagation()}
-                                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-teal-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:shadow-lg hover:shadow-teal-500/20 transform hover:scale-105 transition-all duration-300">
-                                  <ExternalLink size={15} /> Live Demo
-                                </a>
-                              )}
-                              {project.githubLink && (
-                                <a href={project.githubLink} target="_blank" rel="noopener noreferrer"
-                                  onClick={(e) => e.stopPropagation()}
-                                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/5 text-gray-300 text-sm font-medium rounded-lg border border-white/10 hover:bg-white/10 hover:border-teal-500/30 transition-all duration-300">
-                                  <Code2 size={15} /> Source Code
-                                </a>
-                              )}
-                            </div>
+                        <div className="max-w-3xl mx-auto">
+                          <h4 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">
+                            Full Description
+                          </h4>
+                          <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                            {project.description}
+                          </p>
+                          <h4 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">
+                            Tech Stack
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {project.techStack.map((tech, idx) => (
+                              <span key={idx} className="px-3 py-1.5 bg-white/5 text-teal-400 text-xs font-medium rounded-md border border-white/10">
+                                {tech}
+                              </span>
+                            ))}
                           </div>
                         </div>
                       </div>
