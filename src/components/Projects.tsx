@@ -1,85 +1,47 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { projectsData } from '../data/projectsData';
-import { ChevronLeft, ChevronRight, Calendar, Tag, Play } from 'lucide-react';
-
-const slideVariants = {
-  enter: (direction: number) => ({ x: direction > 0 ? 300 : -300, opacity: 0 }),
-  center: { x: 0, opacity: 1 },
-  exit: (direction: number) => ({ x: direction > 0 ? -300 : 300, opacity: 0 }),
-};
+import { Play, Pause, Calendar, Tag, ExternalLink, Code2, ChevronDown, ChevronUp } from 'lucide-react';
 
 const Projects: React.FC = () => {
-  const [[currentIndex, direction], setPage] = useState([0, 0]);
-  const [videoPlaying, setVideoPlaying] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const autoPlayRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+  const [hoveredVideo, setHoveredVideo] = useState<number | null>(null);
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const videoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
 
-  const project = projectsData[currentIndex];
-
-  const goNext = useCallback(() => {
-    setPage(([prev]) => [(prev + 1) % projectsData.length, 1]);
-  }, []);
-
-  const goPrev = useCallback(() => {
-    setPage(([prev]) => [(prev - 1 + projectsData.length) % projectsData.length, -1]);
-  }, []);
-
-  const goTo = useCallback((index: number) => {
-    setPage([index, index > currentIndex ? 1 : -1]);
-  }, [currentIndex]);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const onPlay = () => setVideoPlaying(true);
-    const onPause = () => setVideoPlaying(false);
-    video.addEventListener('play', onPlay);
-    video.addEventListener('pause', onPause);
-
-    const timer = setTimeout(() => {
-      video.play().catch(() => {});
-    }, 400);
-
-    return () => {
-      clearTimeout(timer);
-      video.removeEventListener('play', onPlay);
-      video.removeEventListener('pause', onPause);
-    };
-  }, [currentIndex]);
-
-  useEffect(() => {
-    autoPlayRef.current = setInterval(goNext, 6000);
-    return () => clearInterval(autoPlayRef.current);
-  }, [goNext]);
-
-  const toggleVideo = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-      clearInterval(autoPlayRef.current);
+  const handleVideoHover = (id: number, isHovering: boolean) => {
+    const video = videoRefs.current[id];
+    if (video) {
+      if (isHovering) {
+        if (hoveredVideo !== null && hoveredVideo !== id) {
+          const prevVideo = videoRefs.current[hoveredVideo];
+          if (prevVideo) { prevVideo.pause(); }
+        }
+        video.play();
+        setHoveredVideo(id);
+      } else {
+        video.pause();
+        video.currentTime = 0;
+        setHoveredVideo(null);
+      }
     }
   };
 
+  const setVideoRef = (id: number) => (el: HTMLVideoElement | null) => {
+    videoRefs.current[id] = el;
+  };
+
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') goNext();
-      if (e.key === 'ArrowLeft') goPrev();
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [goNext, goPrev]);
+    Object.values(videoRefs.current).forEach(video => {
+      if (video) video.load();
+    });
+  }, []);
 
   return (
     <section id="projects" className="relative py-24 bg-[#050505]">
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-teal-500/5 rounded-full blur-[120px] pointer-events-none"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="text-teal-400 text-sm font-medium tracking-widest uppercase mb-2 block">Portfolio</span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
@@ -88,63 +50,89 @@ const Projects: React.FC = () => {
           <div className="w-20 h-0.5 bg-gradient-to-r from-teal-400 to-blue-500 mx-auto rounded-full"></div>
         </div>
 
-        <div className="relative max-w-5xl mx-auto">
-          <div className="overflow-hidden rounded-2xl">
-            <AnimatePresence initial={false} custom={direction} mode="wait">
-              <motion.div
-                key={currentIndex}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: 'easeInOut' }}
-              >
-                {/* Video */}
-                <div className="relative aspect-video bg-gray-900 rounded-2xl overflow-hidden">
-                  <video
-                    ref={videoRef}
-                    className="w-full h-full object-cover"
-                    poster={project.thumbnail}
-                    loop
-                    muted
-                    playsInline
-                    onClick={toggleVideo}
+        <div className="space-y-10">
+          {projectsData.map((project) => {
+            const isExpanded = expandedId === project.id;
+
+            return (
+              <div key={project.id} className="group">
+                {/* Main Card */}
+                <div
+                  className="project-card rounded-2xl overflow-hidden cursor-pointer"
+                  onClick={() => setExpandedId(isExpanded ? null : project.id)}
+                >
+                  {/* Video */}
+                  <div
+                    className="relative aspect-video md:aspect-[21/9] bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden"
+                    onMouseEnter={() => handleVideoHover(project.id, true)}
+                    onMouseLeave={() => handleVideoHover(project.id, false)}
                   >
-                    <source src={project.videoUrl} type="video/mp4" />
-                  </video>
+                    <video
+                      ref={setVideoRef(project.id)}
+                      className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+                      poster={project.thumbnail}
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                    >
+                      <source src={project.videoUrl} type="video/mp4" />
+                    </video>
 
-                  {/* Desktop gradient overlay */}
-                  <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/30 to-transparent pointer-events-none"></div>
+                    {/* Desktop gradient overlay */}
+                    <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent"></div>
 
-                  <div onClick={toggleVideo} className="absolute inset-0 flex items-center justify-center cursor-pointer group">
-                    {!videoPlaying && (
-                      <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
-                        <Play size={28} className="text-white ml-1 fill-white" />
+                    {/* Play indicator on hover */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                      <div className="bg-white/10 backdrop-blur-md rounded-full p-5 transform scale-90 group-hover:scale-100 transition-transform duration-500 border border-white/10">
+                        {hoveredVideo === project.id ? (
+                          <Pause className="w-8 h-8 text-white" />
+                        ) : (
+                          <Play className="w-8 h-8 text-white ml-0.5" />
+                        )}
                       </div>
-                    )}
-                  </div>
+                    </div>
 
-                  <div className="absolute top-5 left-5 flex gap-2 pointer-events-none">
-                    <span className="px-3 py-1.5 bg-gradient-to-r from-teal-500 to-blue-600 text-white text-xs font-semibold rounded-full flex items-center gap-1 shadow-lg">
-                      <Tag size={11} />
-                      {project.category}
-                    </span>
-                    {project.year && (
-                      <span className="px-3 py-1.5 bg-black/60 backdrop-blur-md text-white text-xs font-medium rounded-full flex items-center gap-1">
-                        <Calendar size={11} />
-                        {project.year}
+                    {/* Badges */}
+                    <div className="absolute top-5 left-5 flex gap-2">
+                      <span className="px-3 py-1.5 bg-gradient-to-r from-teal-500 to-blue-600 text-white text-xs font-semibold rounded-full flex items-center gap-1 shadow-lg">
+                        <Tag size={11} />
+                        {project.category}
                       </span>
-                    )}
+                      {project.year && (
+                        <span className="px-3 py-1.5 bg-black/60 backdrop-blur-md text-white text-xs font-medium rounded-full flex items-center gap-1">
+                          <Calendar size={11} />
+                          {project.year}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Desktop overlay content */}
+                    <div className="hidden md:block absolute bottom-0 left-0 right-0 p-8">
+                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{project.title}</h3>
+                      <p className="text-gray-400 text-sm md:text-base max-w-2xl line-clamp-2">{project.description}</p>
+                      <div className="flex flex-wrap gap-2 mt-4">
+                        {project.techStack.slice(0, 4).map((tech, idx) => (
+                          <span key={idx} className="px-3 py-1 bg-white/10 text-gray-300 text-xs font-medium rounded-md backdrop-blur-sm">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Expand indicator */}
+                    <div className="absolute bottom-4 right-6 text-gray-500 group-hover:text-teal-400 transition-colors duration-300 hidden md:block">
+                      {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    </div>
                   </div>
 
-                  {/* Desktop overlay content */}
-                  <div className="hidden md:block absolute bottom-0 left-0 right-0 p-8 pointer-events-none">
-                    <h3 className="text-3xl font-bold text-white mb-2">{project.title}</h3>
-                    <p className="text-gray-400 text-base max-w-2xl line-clamp-2">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mt-4">
-                      {project.techStack.slice(0, 5).map((tech, idx) => (
-                        <span key={idx} className="px-3 py-1 bg-white/10 text-gray-300 text-xs font-medium rounded-md backdrop-blur-sm">
+                  {/* Mobile content below video */}
+                  <div className="block md:hidden p-5">
+                    <h3 className="text-lg font-bold text-white mb-2">{project.title}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">{project.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.techStack.slice(0, 4).map((tech, idx) => (
+                        <span key={idx} className="px-2.5 py-1 bg-white/5 text-teal-400 text-xs font-medium rounded-md border border-white/10">
                           {tech}
                         </span>
                       ))}
@@ -152,52 +140,79 @@ const Projects: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Mobile content below video */}
-                <div className="block md:hidden glass-card rounded-b-2xl p-5 -mt-2">
-                  <h3 className="text-lg font-bold text-white mb-2">{project.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">{project.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.techStack.slice(0, 4).map((tech, idx) => (
-                      <span key={idx} className="px-2.5 py-1 bg-white/5 text-teal-400 text-xs font-medium rounded-md border border-white/10">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+                {/* Expanded Details */}
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.35, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <div className="glass-card rounded-b-2xl p-6 md:p-8 -mt-1 border-t-0">
+                        <div className="grid md:grid-cols-2 gap-8">
+                          <div>
+                            <h4 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">
+                              About this project
+                            </h4>
+                            <p className="text-gray-400 text-sm leading-relaxed">
+                              {project.description}
+                            </p>
+                            {project.achievements && (
+                              <div className="mt-6">
+                                <h4 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">
+                                  Achievements
+                                </h4>
+                                <ul className="space-y-2">
+                                  {project.achievements.map((a, i) => (
+                                    <li key={i} className="flex items-start gap-2 text-gray-400 text-sm">
+                                      <span className="text-teal-400 mt-0.5">&#8226;</span>
+                                      {a}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
 
-          <button
-            onClick={goPrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/60 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-teal-500 transition-all duration-300 cursor-pointer z-10"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <button
-            onClick={goNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/60 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-teal-500 transition-all duration-300 cursor-pointer z-10"
-          >
-            <ChevronRight size={20} />
-          </button>
+                          <div>
+                            <h4 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">
+                              Tech Stack
+                            </h4>
+                            <div className="flex flex-wrap gap-2 mb-8">
+                              {project.techStack.map((tech, idx) => (
+                                <span key={idx} className="px-3 py-1.5 bg-white/5 text-teal-400 text-xs font-medium rounded-md border border-white/10">
+                                  {tech}
+                                </span>
+                              ))}
+                            </div>
 
-          <div className="flex justify-center items-center gap-2.5 mt-8">
-            {projectsData.map((p, idx) => (
-              <button
-                key={p.id}
-                onClick={() => goTo(idx)}
-                className={`transition-all duration-300 rounded-full cursor-pointer ${
-                  idx === currentIndex
-                    ? 'w-8 h-2.5 bg-gradient-to-r from-teal-500 to-blue-600'
-                    : 'w-2.5 h-2.5 bg-white/20 hover:bg-white/40'
-                }`}
-              />
-            ))}
-          </div>
-
-          <div className="text-center mt-3 text-gray-500 text-sm">
-            {String(currentIndex + 1).padStart(2, '0')} / {String(projectsData.length).padStart(2, '0')}
-          </div>
+                            <div className="flex gap-3">
+                              {project.liveLink && (
+                                <a href={project.liveLink} target="_blank" rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-teal-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:shadow-lg hover:shadow-teal-500/20 transform hover:scale-105 transition-all duration-300">
+                                  <ExternalLink size={15} /> Live Demo
+                                </a>
+                              )}
+                              {project.githubLink && (
+                                <a href={project.githubLink} target="_blank" rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/5 text-gray-300 text-sm font-medium rounded-lg border border-white/10 hover:bg-white/10 hover:border-teal-500/30 transition-all duration-300">
+                                  <Code2 size={15} /> Source Code
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
