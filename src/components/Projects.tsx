@@ -12,13 +12,17 @@ const Projects: React.FC = () => {
     const video = videoRefs.current[id];
     if (!video) return;
     if (video.paused) {
+      if (playingId !== null && playingId !== id) {
+        const prev = videoRefs.current[playingId];
+        if (prev) prev.pause();
+      }
       video.play();
       setPlayingId(id);
     } else {
       video.pause();
       setPlayingId(null);
     }
-  }, []);
+  }, [playingId]);
 
   const setVideoRef = (id: number) => (el: HTMLVideoElement | null) => {
     videoRefs.current[id] = el;
@@ -56,10 +60,7 @@ const Projects: React.FC = () => {
                   onClick={() => setExpandedId(isExpanded ? null : project.id)}
                 >
                   {/* Video */}
-                  <div
-                    className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden cursor-pointer"
-                    onClick={() => toggleVideo(project.id)}
-                  >
+                  <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden cursor-pointer">
                     <video
                       ref={setVideoRef(project.id)}
                       className="w-full h-full object-cover"
@@ -68,7 +69,7 @@ const Projects: React.FC = () => {
                       muted
                       playsInline
                       preload="metadata"
-                      onClick={(e) => { e.stopPropagation(); toggleVideo(project.id); }}
+                      onClick={() => toggleVideo(project.id)}
                     >
                       <source src={project.videoUrl} type="video/mp4" />
                     </video>
