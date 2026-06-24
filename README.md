@@ -1,65 +1,32 @@
-React JS Project Setup Instructions
-Step 1: Install Node.js
+# Mansoor Dev Portfolio
 
-Make sure you have Node.js installed on your system.
-You can check by running the following commands in your terminal:
+A modern portfolio website built to showcase my experience as an Unreal Engine Developer with over 3 years of experience creating immersive VR, AR, XR, and interactive 3D applications.
 
-node -v
-npm -v
+## Featured Work
 
-If not installed, download and install it from the official Node.js website.
+* VR Vehicle Configurator for Meta Quest
+* XR and Mixed Reality Experiences
+* AR Mini-Games and Interactive Applications
+* Pixel Streaming Projects
+* Gameplay Systems and AI Development
+* Unreal Engine C++ and Blueprint Development
 
-====================================================
+## Technologies
 
-Step 2: Clone the Repository
+* Unreal Engine 5
+* C++
+* Blueprints
+* VR & AR Development
+* Meta Quest
+* Pixel Streaming
+* Git & Version Control
 
-Pull the project from GitHub using:
+## Website Features
 
-git clone https://github.com/syedtayab321/mansoor_portfolio.git
+* Responsive design
+* Project showcase and case studies
+* Technical skills overview
+* Professional experience
+* Contact information and social links
 
-====================================================
-
-Step 3: Navigate to Project Folder
-cd mansoor_portfolio
-
-====================================================
-
-Step 4: Install Dependencies
-
-Run the following command to install all required packages:
-
-npm install
-
-====================================================
-
-Step 5: Run the Project
-
-Start the development server:
-
-npm run dev
-
-OR (if the project uses default React scripts):
-
-npm start
-
-====================================================
-Step 6: Open in Browser
-
-After running the project, open your browser and go to:
-
-http://localhost:3000
-
-====================================================
-
-Step 7: Build for Production (Optional)
-
-To create a production build:
-
-npm run build
-
-====================================================
-
-Notes
-Make sure all dependencies are installed before running the project.
-If you face any error, try reinstalling dependencies using npm install.
-Ensure no other app is using the same port.
+Visit the live portfolio to explore my projects and development experience.
