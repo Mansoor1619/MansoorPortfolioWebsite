@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { projectsData } from '../data/projectsData';
-import { Play, Pause, Calendar, Tag, ChevronDown, ChevronUp } from 'lucide-react';
+import { Play, Pause, Loader, Calendar, Tag, ChevronDown, ChevronUp } from 'lucide-react';
 
 const Projects: React.FC = () => {
   const [playingId, setPlayingId] = useState<number | null>(null);
+  const [bufferingId, setBufferingId] = useState<number | null>(null);
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const videoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
 
@@ -16,11 +17,13 @@ const Projects: React.FC = () => {
         const prev = videoRefs.current[playingId];
         if (prev) prev.pause();
       }
-      video.play();
+      video.play().then(() => setBufferingId(null)).catch(() => setBufferingId(null));
       setPlayingId(id);
+      setBufferingId(id);
     } else {
       video.pause();
       setPlayingId(null);
+      setBufferingId(null);
     }
   }, [playingId]);
 
@@ -68,8 +71,11 @@ const Projects: React.FC = () => {
                       loop
                       muted
                       playsInline
-                      preload="metadata"
+                      preload="auto"
                       onClick={(e) => { e.stopPropagation(); toggleVideo(project.id); setExpandedId(isExpanded ? null : project.id); }}
+                      onWaiting={() => setBufferingId(project.id)}
+                      onPlaying={() => setBufferingId(null)}
+                      onCanPlay={() => setBufferingId(null)}
                     >
                       <source src={project.videoUrl} type="video/mp4" />
                     </video>
@@ -79,7 +85,11 @@ const Projects: React.FC = () => {
 
                     {/* Play/Pause button overlay */}
                     <div className="absolute inset-0 flex items-center justify-center transition-all duration-300 pointer-events-none">
-                      {playingId === project.id ? (
+                      {bufferingId === project.id ? (
+                        <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20">
+                          <Loader className="w-7 h-7 text-teal-400 animate-spin" />
+                        </div>
+                      ) : playingId === project.id ? (
                         <div className="w-14 h-14 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <Pause className="w-6 h-6 text-white fill-white" />
                         </div>
