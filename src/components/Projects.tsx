@@ -69,7 +69,7 @@ const Projects: React.FC = () => {
                       muted
                       playsInline
                       preload="metadata"
-                      onClick={() => toggleVideo(project.id)}
+                      onClick={(e) => { e.stopPropagation(); toggleVideo(project.id); setExpandedId(isExpanded ? null : project.id); }}
                     >
                       <source src={project.videoUrl} type="video/mp4" />
                     </video>
