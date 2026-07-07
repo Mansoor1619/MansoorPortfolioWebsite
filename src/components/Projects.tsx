@@ -17,9 +17,10 @@ const Projects: React.FC = () => {
         const prev = videoRefs.current[playingId];
         if (prev) prev.pause();
       }
-      video.play().then(() => setBufferingId(null)).catch(() => setBufferingId(null));
-      setPlayingId(id);
       setBufferingId(id);
+      video.play().then(() => setBufferingId(null)).catch(() => { setBufferingId(null); setPlayingId(null); });
+      setPlayingId(id);
+      setTimeout(() => setBufferingId(null), 5000);
     } else {
       video.pause();
       setPlayingId(null);
@@ -73,9 +74,7 @@ const Projects: React.FC = () => {
                       playsInline
                       preload="auto"
                       onClick={(e) => { e.stopPropagation(); toggleVideo(project.id); setExpandedId(isExpanded ? null : project.id); }}
-                      onWaiting={() => setBufferingId(project.id)}
-                      onPlaying={() => setBufferingId(null)}
-                      onCanPlay={() => setBufferingId(null)}
+                      onError={() => { setBufferingId(null); setPlayingId(null); }}
                     >
                       <source src={project.videoUrl} type="video/mp4" />
                     </video>
