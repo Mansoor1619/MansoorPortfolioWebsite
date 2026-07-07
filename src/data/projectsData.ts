@@ -4,6 +4,7 @@ export interface Project {
   category: string;
   description: string;
   videoUrl: string;
+  youtubeId?: string;
   thumbnail: string;
   techStack: string[];
   liveLink?: string;
@@ -20,6 +21,7 @@ export const projectsData: Project[] = [
     category: "Game Development",
     description: "A high-fidelity military VR simulator featuring dynamic weather systems, diverse combat environments, multiplayer networking, AI-driven enemy behavior, vehicle driving mechanics, and an extensive multi-weapon arsenal - engineered in Unreal Engine 5.",
     videoUrl: "/MultiplayerVR.mp4",
+    youtubeId: "jSNSTNAjb7k",
     thumbnail: "/MultiplayerVR.png",
     techStack: ["Unreal Engine 5", "C++", "Blueprints", "VR", "Multiplayer", "AI", "Niagara VFX", "Lumen"],
     liveLink: "https://combatvr.pro/",
@@ -38,6 +40,7 @@ export const projectsData: Project[] = [
     category: "Real-time Rendering",
     description: "Revolutionary architectural visualization tool that enables real-time material changes, lighting scenarios, and interactive walkthroughs. Used by top architecture firms for client presentations and design reviews.",
     videoUrl: "/Archviz.mp4",
+    youtubeId: "GgA-PE2N93E",
     thumbnail: "/ArchitecturalViz.png",
     techStack: ["Unreal Engine 5", "Blueprints", "Lumen", "Nanite", "Real-time Rendering"],
     liveLink: "https://project-demo.com/lumina",
@@ -55,6 +58,7 @@ export const projectsData: Project[] = [
     category: "Virtual Reality",
     description: "An immersive VR car configurator featuring real-time material changes for exterior and interior, dynamic rim customization, environment switching, and live lighting adjustments - delivering a premium automotive experience in Unreal Engine 5.",
     videoUrl: "/VR_CarConfigurator.mp4",
+    youtubeId: "j7CPi6FcOgw",
     thumbnail: "/VRCarConfigurator.png",
     techStack: ["Unreal Engine 5", "Blueprints", "VR", "Lumen", "Nanite", "Datasmith", "Material System"],
     liveLink: "https://project-demo.com/meta-character",
@@ -73,6 +77,7 @@ export const projectsData: Project[] = [
     category: "Virtual Reality",
     description: "Step into a virtual museum and explore Saudi Arabia like never before. An interactive VR experience where city names on a national map transform into detailed 3D models, unlocking curated cultural videos that celebrate the heritage and traditions of each region.",
     videoUrl: "/Saudia_Map_Teleportation.mp4",
+    youtubeId: "vuym0t4S5wg",
     thumbnail: "/VRMuseum.png",
     techStack: ["Unreal Engine 5", "Blueprints", "VR", "Interactive UI", "3D Modeling", "Media Framework", "Lumen"],
     liveLink: "https://project-demo.com/vr-museum",
@@ -90,6 +95,7 @@ export const projectsData: Project[] = [
     category: "Virtual Reality",
     description: "A physics-driven VR paper toss game built in Unreal Engine 5 with real-time hand tracking, allowing players to crumple, aim, and throw paper balls using natural hand gestures - complete with dynamic scoring and responsive object interaction.",
     videoUrl: "/PaperTossVR.mp4",
+    youtubeId: "nX3Ny2EdUxo",
     thumbnail: "/PaperThrowVR.png",
     techStack: ["Unreal Engine 5", "Blueprints", "VR", "Hand Tracking", "Physics", "Meta Quest"],
     liveLink: "https://project-demo.com/procedural-world",
@@ -108,6 +114,7 @@ export const projectsData: Project[] = [
     category: "Augmented Reality",
     description: "A multi-game AR experience built in Unreal Engine 5 featuring target shooting, spatial puzzles, and object placement challenges - powered by real-time scoring systems and competitive leaderboards for an engaging augmented reality gameplay collection.",
     videoUrl: "/AR.mp4",
+    youtubeId: "1ktUQXlomcE",
     thumbnail: "/AR.jpg",
     techStack: ["Unreal Engine 5", "Blueprints", "AR", "Spatial Detection", "Real-time Scoring", "Leaderboard", "Meta Quest"],
     liveLink: "https://project-demo.com/particle-sim",
@@ -125,6 +132,7 @@ export const projectsData: Project[] = [
     category: "XR Development",
     description: "A high-fidelity XR vehicle configurator built in Unreal Engine 5, featuring real-time material and lighting systems for full exterior and interior customization, dynamic rim selection, and seamless environment switching across multiple showroom settings - accessible across both AR and VR platforms.",
     videoUrl: "/XR_CarConfigurator.mp4",
+    youtubeId: "p08gXjn1Av8",
     thumbnail: "/XR.jpg",
     techStack: ["Unreal Engine 5", "Blueprints", "XR", "AR", "VR", "Lumen", "Datasmith", "Real-time Rendering"],
     liveLink: "https://project-demo.com/particle-sim",
@@ -142,6 +150,7 @@ export const projectsData: Project[] = [
     category: "AI Development",
     description: "A comprehensive AI combat showcase built in Unreal Engine 5 demonstrating production-ready NPC intelligence - featuring Behavior Tree architecture, EQS-driven spatial awareness, realistic patrol systems, precision shooting mechanics, and aggressive adaptive attack behaviors.",
     videoUrl: "/TPS_AI.mp4",
+    youtubeId: "81rI5PSaSfs",
     thumbnail: "/AIShooter.png",
     techStack: ["Unreal Engine 5", "C++", "Blueprints", "Behavior Trees", "EQS", "AI Systems", "Combat AI"],
     liveLink: "https://project-demo.com/particle-sim",
@@ -159,6 +168,7 @@ export const projectsData: Project[] = [
     category: "Virtual Reality",
     description: "A comprehensive VR paintball game built in Unreal Engine 5 featuring multiple combat maps, three distinct game modes (timed, wave survival, one-life elimination), AI-driven opponents with Behavior Trees, a realistic shooting and ammo pickup system, and a fully interactive health and HUD widget system.",
     videoUrl: "/PaintBallVR.mp4",
+    youtubeId: "iOGf72TZTBU",
     thumbnail: "/PaintBallVR.jpg",
     techStack: ["Unreal Engine 5", "C++", "Blueprints", "VR", "AI Systems", "Behavior Trees", "Meta Quest", "HUD"],
     liveLink: "https://project-demo.com/particle-sim",

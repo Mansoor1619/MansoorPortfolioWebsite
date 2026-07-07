@@ -1,42 +1,16 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { projectsData } from '../data/projectsData';
-import { Play, Pause, Loader, Calendar, Tag, ChevronDown, ChevronUp } from 'lucide-react';
+import { Play, Calendar, Tag, ChevronDown, ChevronUp } from 'lucide-react';
 
 const Projects: React.FC = () => {
-  const [playingId, setPlayingId] = useState<number | null>(null);
-  const [bufferingId, setBufferingId] = useState<number | null>(null);
+  const [loadedVideos, setLoadedVideos] = useState<Set<number>>(new Set());
   const [expandedId, setExpandedId] = useState<number | null>(null);
-  const videoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
 
-  const toggleVideo = useCallback((id: number) => {
-    const video = videoRefs.current[id];
-    if (!video) return;
-    if (video.paused) {
-      if (playingId !== null && playingId !== id) {
-        const prev = videoRefs.current[playingId];
-        if (prev) prev.pause();
-      }
-      setBufferingId(id);
-      video.play().then(() => setBufferingId(null)).catch(() => { setBufferingId(null); setPlayingId(null); });
-      setPlayingId(id);
-      setTimeout(() => setBufferingId(null), 5000);
-    } else {
-      video.pause();
-      setPlayingId(null);
-      setBufferingId(null);
-    }
-  }, [playingId]);
-
-  const setVideoRef = (id: number) => (el: HTMLVideoElement | null) => {
-    videoRefs.current[id] = el;
+  const loadVideo = (id: number) => {
+    setLoadedVideos(prev => new Set(prev).add(id));
+    setExpandedId(id);
   };
-
-  useEffect(() => {
-    Object.values(videoRefs.current).forEach(video => {
-      if (video) video.load();
-    });
-  }, []);
 
   return (
     <section id="projects" className="relative py-24 bg-[#050505]">
@@ -55,6 +29,7 @@ const Projects: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
           {projectsData.map((project) => {
             const isExpanded = expandedId === project.id;
+            const isLoaded = loadedVideos.has(project.id);
 
             return (
               <div key={project.id} className={`group ${isExpanded ? 'md:col-span-2' : ''}`}>
@@ -65,39 +40,35 @@ const Projects: React.FC = () => {
                 >
                   {/* Video */}
                   <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden cursor-pointer">
-                    <video
-                      ref={setVideoRef(project.id)}
-                      className="w-full h-full object-cover"
-                      poster={project.thumbnail}
-                      loop
-                      muted
-                      playsInline
-                      preload="auto"
-                      onClick={(e) => { e.stopPropagation(); toggleVideo(project.id); setExpandedId(isExpanded ? null : project.id); }}
-                      onError={() => { setBufferingId(null); setPlayingId(null); }}
-                    >
-                      <source src={project.videoUrl} type="video/mp4" />
-                    </video>
+                    {isLoaded && project.youtubeId ? (
+                      <iframe
+                        className="absolute inset-0 w-full h-full"
+                        src={`https://www.youtube.com/embed/${project.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
+                        title={project.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    ) : (
+                      <>
+                        <img
+                          src={project.thumbnail}
+                          alt={project.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                        <div
+                          className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/10 transition-colors duration-300"
+                          onClick={(e) => { e.stopPropagation(); loadVideo(project.id); }}
+                        >
+                          <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 transition-transform duration-300 hover:scale-110">
+                            <Play className="w-7 h-7 text-white ml-0.5 fill-white" />
+                          </div>
+                        </div>
+                      </>
+                    )}
 
                     {/* Desktop gradient overlay */}
                     <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent pointer-events-none"></div>
-
-                    {/* Play/Pause button overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center transition-all duration-300 pointer-events-none">
-                      {bufferingId === project.id ? (
-                        <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20">
-                          <Loader className="w-7 h-7 text-teal-400 animate-spin" />
-                        </div>
-                      ) : playingId === project.id ? (
-                        <div className="w-14 h-14 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <Pause className="w-6 h-6 text-white fill-white" />
-                        </div>
-                      ) : (
-                        <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 transition-transform duration-300 hover:scale-110">
-                          <Play className="w-7 h-7 text-white ml-0.5 fill-white" />
-                        </div>
-                      )}
-                    </div>
 
                     {/* Badges */}
                     <div className="absolute top-5 left-5 flex gap-2">
