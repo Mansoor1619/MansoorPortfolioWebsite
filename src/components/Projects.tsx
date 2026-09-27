@@ -22,7 +22,6 @@ export default function Projects() {
           eyebrow="Portfolio"
           title="Featured work"
           meta={`${projectsData.length} projects · ${featuredCount} featured`}
-          lede="Click any card to expand the technical breakdown, or hit play to watch the build video."
         />
 
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">

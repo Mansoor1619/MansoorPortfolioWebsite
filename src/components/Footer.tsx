@@ -44,11 +44,10 @@ export default function Footer() {
           </nav>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-line-soft pt-6 text-[13.5px] text-ink-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 border-t border-line-soft pt-6 text-[13.5px] text-ink-4">
           <p>
             © {year} {personalData.name}. All rights reserved.
           </p>
-          <p className="font-mono">Built with React, Vite &amp; Tailwind CSS</p>
         </div>
       </div>
 
