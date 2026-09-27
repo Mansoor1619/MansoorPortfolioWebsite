@@ -1,212 +1,131 @@
-import React, { useState, useEffect } from 'react';
-import { Download, ChevronDown, Code2, Gamepad2, Layers, Sparkles } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { Download, ArrowUpRight } from 'lucide-react';
 import { personalData } from '../data/personalData';
-import { iconsData } from '../data/iconData';
+import SocialLinks from './SocialLinks';
 
-const rotatingTexts = [
-  "Unreal Engine Gameplay Programmer",
-  "VR Developer",
-  "Game Developer"
+const [firstName, ...restName] = personalData.name.split(' ');
+
+const META = [
+  ['Location', personalData.location],
+  ['Stack', 'C++ · Blueprints · UE5'],
+  ['Experience', '3+ years production'],
 ];
 
-const Hero: React.FC = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [textIndex, setTextIndex] = useState(0);
-  const [counts, setCounts] = useState({ years: 0, projects: 0, clients: 0 });
+export default function Hero() {
+  const titles = personalData.rotatingTitles;
+  const reduceMotion = useReducedMotion();
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTextIndex((prev) => (prev + 1) % rotatingTexts.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+    if (reduceMotion) return;
+    const id = window.setInterval(() => {
+      setIndex((prev) => (prev + 1) % titles.length);
+    }, 3200);
+    return () => window.clearInterval(id);
+  }, [reduceMotion, titles.length]);
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  useEffect(() => {
-    const targets = { years: 3, projects: 20, clients: 15 };
-    const duration = 2000;
-    const steps = 60;
-    const increment = { years: targets.years / steps, projects: targets.projects / steps, clients: targets.clients / steps };
-      const current = { years: 0, projects: 0, clients: 0 };
-    let step = 0;
-
-    const timer = setInterval(() => {
-      step++;
-      current.years = Math.min(current.years + increment.years, targets.years);
-      current.projects = Math.min(current.projects + increment.projects, targets.projects);
-      current.clients = Math.min(current.clients + increment.clients, targets.clients);
-      setCounts({
-        years: Math.round(current.years),
-        projects: Math.round(current.projects),
-        clients: Math.round(current.clients)
-      });
-      if (step >= steps) clearInterval(timer);
-    }, duration / steps);
-
-    return () => clearInterval(timer);
-  }, []);
+  const scrollToAbout = () => {
+    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505]">
-      {/* Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-      </div>
+    <section id="home" className="relative isolate overflow-hidden bg-base">
+      {/* single static light source, no mouse tracking */}
+      <div className="amber-glow pointer-events-none absolute -top-[220px] left-1/2 h-[520px] w-[900px] -translate-x-1/2" />
+      <div className="hairline-grid masked-grid pointer-events-none absolute inset-0" />
 
-      {/* Gradient Orbs */}
-      <div className="absolute inset-0 w-full h-full">
-        <div
-          className="absolute w-[500px] h-[500px] bg-teal-500/10 rounded-full blur-[120px]"
-          style={{ transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`, top: '10%', left: '20%' }}
-        ></div>
-        <div
-          className="absolute w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-[120px]"
-          style={{ transform: `translate(${-mousePosition.x * 0.015}px, ${-mousePosition.y * 0.015}px)`, top: '50%', right: '10%' }}
-        ></div>
-        <div
-          className="absolute w-[350px] h-[350px] bg-purple-500/10 rounded-full blur-[120px]"
-          style={{ bottom: '5%', left: '30%' }}
-        ></div>
-
-        {/* Grid overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(45,212,191,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(45,212,191,0.03)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/10 border border-teal-500/20 mb-8">
-            <Sparkles className="w-4 h-4 text-teal-400" />
-            <span className="text-teal-400 text-sm font-medium">Available for freelance work</span>
-          </div>
-
-          {/* Profile Image */}
-          <div className="mb-8 relative inline-block">
-            <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-600 rounded-full blur-lg opacity-75 animate-glow-pulse"></div>
-            <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-600 rounded-full animate-spin opacity-30" style={{ animationDuration: '6s' }}></div>
-            <img
-              src={personalData.avatar}
-              alt={personalData.name}
-              className="w-64 h-64 md:w-72 md:h-72 rounded-full mx-auto relative z-10 object-cover object-[center_20%] border-2 border-white/10"
-            />
-          </div>
-
-          {/* Name */}
-          <h1 className="text-5xl md:text-7xl font-bold mb-4 gradient-text">
-            {personalData.name}
-          </h1>
-
-          {/* Rotating Text */}
-          <div className="h-12 md:h-16 mb-4 flex items-center justify-center">
-            <p className="text-xl md:text-2xl text-gray-300 animate-fade-in-up" key={textIndex}>
-              {rotatingTexts[textIndex]}
+      <div className="relative mx-auto max-w-6xl px-6 md:px-8">
+        <div className="grid items-end gap-12 pt-32 pb-20 md:grid-cols-[1fr_320px] md:gap-16 md:pt-44 md:pb-24">
+          <div>
+            <p className="mb-7 inline-flex items-center gap-2.5 text-[13.5px] font-medium text-accent">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_0_3px_rgba(217,164,65,0.16)]" />
+              Available for freelance work
             </p>
-          </div>
 
-          {/* Description */}
-          <p className="text-base md:text-lg text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-            {personalData.description}
-          </p>
+            <h1 className="text-[52px] leading-[0.94] font-bold tracking-[-0.045em] text-ink sm:text-[68px] md:text-[84px]">
+              {firstName}
+              <br />
+              <span className="font-light text-ink-4">{restName.join(' ')}</span>
+            </h1>
 
-          {/* Stats */}
-          <div className="flex justify-center gap-8 md:gap-16 mb-10">
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">{counts.years}+</div>
-              <div className="text-sm text-gray-500 mt-1">Years Exp</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">{counts.projects}+</div>
-              <div className="text-sm text-gray-500 mt-1">Projects</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">{counts.clients}+</div>
-              <div className="text-sm text-gray-500 mt-1">Clients</div>
-            </div>
-          </div>
+            {/* Rotating field. The full list is exposed to screen readers as static
+                text, and rotation is skipped entirely when reduced motion is on. */}
+            <h2 className="mt-6 mb-5 min-h-[2.7em] text-[20px] leading-[1.35] font-medium tracking-[-0.01em] text-ink-2 md:min-h-[1.4em] md:text-[22px]">
+              <span className="sr-only">{titles.join(' · ')}</span>
+              <span className="relative block overflow-hidden" aria-hidden="true">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={index}
+                    initial={reduceMotion ? false : { y: 16, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={reduceMotion ? undefined : { y: -16, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    className="block"
+                  >
+                    {titles[index]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+            </h2>
 
-          {/* Social Icons */}
-          <div className="flex justify-center space-x-5 mb-10">
-            {iconsData.slice(0, 5).map((social) => (
+            <p className="mb-9 max-w-[54ch] text-[17px] leading-[1.7] text-ink-3">
+              {personalData.description}
+            </p>
+
+            <div className="flex flex-wrap gap-3">
               <a
-                key={social.id}
-                href={`${social.url}${personalData[social.id as keyof typeof personalData] || ''}`}
+                href={personalData.resumeLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group"
+                className="inline-flex items-center gap-2 rounded-[9px] bg-accent px-6 py-3.5 text-[15px] font-semibold text-[#0b0b0c] transition-colors duration-200 hover:bg-accent-hi"
               >
-                <div className="w-11 h-11 flex items-center justify-center bg-white/5 backdrop-blur-sm rounded-full border border-white/10 group-hover:border-teal-500/50 transition-all duration-300 group-hover:scale-110 group-hover:bg-teal-500/10">
-                  <img
-                    src={social.icon}
-                    alt={social.name}
-                    className="w-5 h-5 brightness-0 invert opacity-70 group-hover:opacity-100 transition-all duration-300"
-                  />
-                </div>
+                <Download size={17} />
+                Download résumé
               </a>
-            ))}
+              <a
+                href="#projects"
+                className="inline-flex items-center gap-2 rounded-[9px] border border-line px-6 py-3.5 text-[15px] font-medium text-ink-2 transition-colors duration-200 hover:border-accent/50 hover:text-ink"
+              >
+                View work
+                <ArrowUpRight size={17} />
+              </a>
+            </div>
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex justify-center gap-4 flex-wrap">
-            <a
-              href={personalData.resumeLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center px-8 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white font-medium rounded-xl overflow-hidden shadow-lg hover:shadow-teal-500/25 transform hover:scale-105 transition-all duration-300"
-            >
-              <Download size={18} className="mr-2" />
-              <span>Download Resume</span>
-            </a>
-            <a
-              href="#projects"
-              className="inline-flex items-center px-8 py-3 border border-white/20 text-gray-300 font-medium rounded-xl hover:bg-white/5 hover:border-teal-500/30 transform hover:scale-105 transition-all duration-300 group"
-            >
-              <span>View Projects</span>
-              <ChevronDown size={18} className="ml-2 group-hover:translate-y-1 transition-transform duration-300" />
-            </a>
+          <div>
+            <img
+              src={personalData.avatar}
+              alt={`${personalData.name}, ${personalData.title}`}
+              width={640}
+              height={640}
+              className="aspect-square w-full rounded-[14px] border border-line object-cover object-[center_20%] saturate-[0.92] contrast-[1.03]"
+            />
+
+            <dl className="mt-4 space-y-1.5 font-mono text-[13px] leading-[1.7]">
+              {META.map(([label, value]) => (
+                <div key={label} className="flex gap-2">
+                  <dt className="text-ink-4">{label}</dt>
+                  <dd className="text-ink-2">{value}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <SocialLinks variant="buttons" className="mt-5 flex flex-wrap gap-2.5" />
           </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer group"
-        onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-      >
-        <div className="w-5 h-9 border-2 border-white/20 rounded-full flex justify-center group-hover:border-teal-500/50 transition-colors duration-300">
-          <div className="w-1 h-2.5 bg-gradient-to-b from-teal-400 to-blue-500 rounded-full mt-2 animate-scroll-indicator"></div>
-        </div>
-      </div>
-
-      {/* Floating Icons */}
-      <div className="absolute top-1/4 left-[8%] opacity-15 animate-float-slow hidden lg:block">
-        <Code2 size={40} className="text-teal-500" />
-      </div>
-      <div className="absolute bottom-1/4 right-[8%] opacity-15 animate-float-slow hidden lg:block" style={{ animationDelay: '2s' }}>
-        <Gamepad2 size={40} className="text-blue-500" />
-      </div>
-      <div className="absolute top-1/3 right-[15%] opacity-15 animate-float-slow hidden lg:block" style={{ animationDelay: '4s' }}>
-        <Layers size={40} className="text-purple-500" />
+      <div className="relative mx-auto max-w-6xl px-6 pb-10 md:px-8">
+        <button
+          type="button"
+          onClick={scrollToAbout}
+          aria-label="Scroll to About section"
+          className="group flex h-9 w-5 items-start justify-center rounded-full border-2 border-ink-4/40 pt-2 transition-colors duration-300 hover:border-accent/60"
+        >
+          <span className="h-2 w-0.5 rounded-full bg-accent transition-transform duration-300 group-hover:translate-y-1" />
+        </button>
       </div>
     </section>
   );
-};
-
-export default Hero;
+}

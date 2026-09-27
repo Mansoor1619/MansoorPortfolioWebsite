@@ -1,92 +1,83 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { Mail, Phone, MapPin, Briefcase, Layers, Users, Gauge } from 'lucide-react';
 import { personalData } from '../data/personalData';
-import { MapPin, Mail, Phone, Award, Briefcase, Code, Headphones } from 'lucide-react';
+import SectionHeading from './SectionHeading';
+import Reveal from './Reveal';
 
-const StatCard: React.FC<{ icon: React.ReactNode; value: string; label: string; delay: number }> = ({ icon, value, label, delay }) => {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+const FACTS = [
+  { icon: <Mail size={15} />, label: personalData.email, href: `mailto:${personalData.email}` },
+  { icon: <Phone size={15} />, label: personalData.phone, href: `tel:${personalData.phone.replace(/\s/g, '')}` },
+  { icon: <MapPin size={15} />, label: personalData.location },
+];
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setTimeout(() => setVisible(true), delay); observer.disconnect(); } },
-      { threshold: 0.2 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [delay]);
+// Concrete, defensible figures drawn from the CV — no inflated vanity metrics.
+const STATS = [
+  { icon: <Briefcase size={16} />, value: '3+', label: 'Years in production' },
+  { icon: <Layers size={16} />, value: '9', label: 'Shipped projects' },
+  { icon: <Users size={16} />, value: '30+', label: 'Concurrent players' },
+  { icon: <Gauge size={16} />, value: '72–90', label: 'FPS on Quest 3' },
+];
 
+export default function About() {
   return (
-    <div
-      ref={ref}
-      className={`glass-card rounded-xl p-5 text-center transition-all duration-700 ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
-    >
-      <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-teal-500/10 text-teal-400 mb-3">
-        {icon}
-      </div>
-      <div className="text-2xl font-bold text-white mb-1">{value}</div>
-      <div className="text-sm text-gray-500">{label}</div>
-    </div>
-  );
-};
+    <section id="about" className="relative bg-base py-24">
+      <div className="mx-auto max-w-6xl px-6 md:px-8">
+        <SectionHeading
+          eyebrow="About"
+          title="Who I am"
+          meta="Islamabad, PK"
+        />
 
-const About: React.FC = () => {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <section id="about" className="relative py-24 bg-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
-        <div className={`text-center mb-16 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <span className="text-teal-400 text-sm font-medium tracking-widest uppercase mb-2 block">About</span>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Who <span className="gradient-text">I Am</span>
-          </h2>
-          <div className="w-20 h-0.5 bg-gradient-to-r from-teal-400 to-blue-500 mx-auto rounded-full"></div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-12 items-start">
-          <div className={`space-y-6 transition-all duration-700 delay-200 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <div className="glass-card rounded-2xl p-8">
-              <p className="text-gray-400 leading-relaxed text-base">
-                {personalData.aboutText}
-              </p>
+        <div className="grid gap-10 md:grid-cols-[1.35fr_1fr] md:gap-14">
+          <Reveal delay={100}>
+            <div className="rounded-[14px] border border-line bg-surface p-7 md:p-8">
+              <p className="text-[17px] leading-[1.8] text-ink-2">{personalData.aboutText}</p>
             </div>
 
-            <div className="space-y-3">
-              {[
-                { icon: <Mail size={16} />, label: personalData.email },
-                { icon: <Phone size={16} />, label: personalData.phone },
-                { icon: <MapPin size={16} />, label: personalData.location },
-              ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3 px-4 py-3 glass-card rounded-lg">
-                  <span className="text-teal-400">{item.icon}</span>
-                  <span className="text-gray-400 text-sm">{item.label}</span>
+            <ul className="mt-5 space-y-2.5">
+              {FACTS.map((fact) => {
+                const content = (
+                  <>
+                    <span className="text-accent">{fact.icon}</span>
+                    <span className="text-[15.5px] text-ink-2">{fact.label}</span>
+                  </>
+                );
+                return (
+                  <li key={fact.label}>
+                    {fact.href ? (
+                      <a
+                        href={fact.href}
+                        className="flex items-center gap-3 rounded-[10px] border border-line-soft px-4 py-3 transition-colors duration-200 hover:border-accent/40"
+                      >
+                        {content}
+                      </a>
+                    ) : (
+                      <div className="flex items-center gap-3 rounded-[10px] border border-line-soft px-4 py-3">
+                        {content}
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </Reveal>
+
+          <div className="grid grid-cols-2 gap-4 self-start">
+            {STATS.map((stat, i) => (
+              <Reveal key={stat.label} delay={150 + i * 90}>
+                <div className="h-full rounded-[14px] border border-line bg-surface p-5">
+                  <span className="mb-3 inline-grid h-9 w-9 place-items-center rounded-[9px] bg-accent/10 text-accent">
+                    {stat.icon}
+                  </span>
+                  <p className="text-[26px] leading-none font-bold tracking-[-0.02em] text-ink">
+                    {stat.value}
+                  </p>
+                  <p className="mt-2 text-[14px] leading-snug text-ink-4">{stat.label}</p>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <StatCard icon={<Briefcase size={16} />} value="3+" label="Years Experience" delay={0} />
-            <StatCard icon={<Code size={16} />} value="20+" label="Projects Completed" delay={150} />
-            <StatCard icon={<Award size={16} />} value="1" label="AAA Titles" delay={300} />
-            <StatCard icon={<Headphones size={16} />} value="24/7" label="Support" delay={450} />
+              </Reveal>
+            ))}
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default About;
+}

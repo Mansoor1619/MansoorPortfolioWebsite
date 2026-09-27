@@ -7,30 +7,28 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
-const SectionDivider = () => (
-  <div className="relative h-24 md:h-32 overflow-hidden bg-[#050505]">
-    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent"></div>
-  </div>
-);
-
-function App() {
+export default function App() {
   return (
-    <div className="bg-[#050505] min-h-screen">
+    <div className="min-h-screen bg-base">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-[14px] focus:font-semibold focus:text-[#0b0b0c]"
+      >
+        Skip to content
+      </a>
+
       <Navbar />
-      <Hero />
-      <SectionDivider />
-      <About />
-      <SectionDivider />
-      <Skills />
-      <SectionDivider />
-      <Experience />
-      <SectionDivider />
-      <Projects />
-      <SectionDivider />
-      <Contact />
+
+      <main id="main">
+        <Hero />
+        <About />
+        <Skills />
+        <Experience />
+        <Projects />
+        <Contact />
+      </main>
+
       <Footer />
     </div>
   );
 }
-
-export default App;

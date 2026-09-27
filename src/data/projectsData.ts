@@ -3,181 +3,134 @@ export interface Project {
   title: string;
   category: string;
   description: string;
-  videoUrl: string;
-  youtubeId?: string;
+  /** Long-form copy shown in the expanded panel. */
+  detail: string;
+  youtubeId: string;
   thumbnail: string;
   techStack: string[];
-  liveLink?: string;
-  githubLink?: string;
-  year?: string;
+  year: string;
   featured?: boolean;
-  achievements?: string[];
 }
 
 export const projectsData: Project[] = [
   {
     id: 1,
-    title: "Military Grade VR Simulator",
-    category: "Game Development",
-    description: "A high-fidelity military VR simulator featuring dynamic weather systems, diverse combat environments, multiplayer networking, AI-driven enemy behavior, vehicle driving mechanics, and an extensive multi-weapon arsenal - engineered in Unreal Engine 5.",
-    videoUrl: "/MultiplayerVR.mp4",
-    youtubeId: "jSNSTNAjb7k",
-    thumbnail: "/MultiplayerVR.png",
-    techStack: ["Unreal Engine 5", "C++", "Blueprints", "VR", "Multiplayer", "AI", "Niagara VFX", "Lumen"],
-    liveLink: "https://combatvr.pro/",
-    githubLink: "https://github.com/username/neon-nexus",
-    year: "2025",
+    title: 'Military Grade VR Simulator',
+    category: 'Game Development',
+    description:
+      'A high-fidelity military VR simulator with dynamic weather, varied combat environments, multiplayer networking, AI-driven enemies and vehicle mechanics.',
+    detail:
+      'Built in Unreal Engine 5, this simulator covers a full combat loop: weapon handling with recoil and reload simulation, vehicle driving, and AI enemies driven by Behaviour Trees and EQS. Multiplayer sessions support LAN and online play for 30+ concurrent players using Unreal replication and RPC frameworks. Profiling work on rendering, physics and network traffic holds 72–90 FPS on Meta Quest 3 and reduced draw calls by roughly 30%.',
+    youtubeId: 'jSNSTNAjb7k',
+    thumbnail: '/MultiplayerVR.webp',
+    techStack: ['Unreal Engine 5', 'C++', 'Blueprints', 'VR', 'Multiplayer', 'AI', 'Niagara', 'Lumen'],
+    year: '2025',
     featured: true,
-    achievements: [
-      "Featured on Unreal Engine Marketplace",
-      "20K+ downloads",
-      "Best Environment Design Award 2024"
-    ]
   },
   {
     id: 2,
-    title: "Architectural Viz",
-    category: "Real-time Rendering",
-    description: "Revolutionary architectural visualization tool that enables real-time material changes, lighting scenarios, and interactive walkthroughs. Used by top architecture firms for client presentations and design reviews.",
-    videoUrl: "/Archviz.mp4",
-    youtubeId: "GgA-PE2N93E",
-    thumbnail: "/ArchitecturalViz.png",
-    techStack: ["Unreal Engine 5", "Blueprints", "Lumen", "Nanite", "Real-time Rendering"],
-    liveLink: "https://project-demo.com/lumina",
-    githubLink: "https://github.com/username/lumina",
-    year: "2025",
-    achievements: [
-      "Used by 50+ architecture firms",
-      "Featured in Architectural Digest",
-      "Best Innovation Award 2024"
-    ]
+    title: 'Architectural Viz',
+    category: 'Real-time Rendering',
+    description:
+      'Real-time architectural walkthroughs enabling live material changes, lighting scenarios and interactive client presentations.',
+    detail:
+      'A real-time visualization toolset for architecture studios. Clients can swap materials, test lighting scenarios and walk through interior spaces interactively instead of waiting on offline renders. Built with Lumen and Nanite for physically accurate lighting at interactive frame rates, and Datasmith for importing and optimizing BIM-derived geometry.',
+    youtubeId: 'GgA-PE2N93E',
+    thumbnail: '/ArchitecturalViz.webp',
+    techStack: ['Unreal Engine 5', 'Blueprints', 'Lumen', 'Nanite', 'Datasmith'],
+    year: '2025',
   },
   {
     id: 3,
-    title: "VR Car Configurator",
-    category: "Virtual Reality",
-    description: "An immersive VR car configurator featuring real-time material changes for exterior and interior, dynamic rim customization, environment switching, and live lighting adjustments - delivering a premium automotive experience in Unreal Engine 5.",
-    videoUrl: "/VR_CarConfigurator.mp4",
-    youtubeId: "j7CPi6FcOgw",
-    thumbnail: "/VRCarConfigurator.png",
-    techStack: ["Unreal Engine 5", "Blueprints", "VR", "Lumen", "Nanite", "Datasmith", "Material System"],
-    liveLink: "https://project-demo.com/meta-character",
-    githubLink: "https://github.com/username/meta-character",
-    year: "2023",
+    title: 'VR Car Configurator',
+    category: 'Virtual Reality',
+    description:
+      'An immersive VR configurator with real-time material, rim and environment customization, delivered on Meta Quest 2.',
+    detail:
+      'A premium automotive configuration experience running entirely in standalone VR. Customers configure exterior paint, interior trim and wheel design in real time, and switch between showroom environments to judge how the finish reads under different lighting. Optimized to hold a stable 72 FPS on Quest 2 by streaming assets on demand and baking lighting where it did not need to be dynamic.',
+    youtubeId: 'j7CPi6FcOgw',
+    thumbnail: '/VRCarConfigurator.webp',
+    techStack: ['Unreal Engine 5', 'Blueprints', 'VR', 'Lumen', 'Nanite', 'Datasmith', 'Material System'],
+    year: '2023',
     featured: true,
-    achievements: [
-      "10K+ community downloads",
-      "Used in 3 AAA game projects",
-      "Epic Games MegaGrant recipient"
-    ]
   },
   {
     id: 4,
-    title: "VR Museum: Saudia Traveler",
-    category: "Virtual Reality",
-    description: "Step into a virtual museum and explore Saudi Arabia like never before. An interactive VR experience where city names on a national map transform into detailed 3D models, unlocking curated cultural videos that celebrate the heritage and traditions of each region.",
-    videoUrl: "/Saudia_Map_Teleportation.mp4",
-    youtubeId: "vuym0t4S5wg",
-    thumbnail: "/VRMuseum.png",
-    techStack: ["Unreal Engine 5", "Blueprints", "VR", "Interactive UI", "3D Modeling", "Media Framework", "Lumen"],
-    liveLink: "https://project-demo.com/vr-museum",
-    githubLink: "https://github.com/username/vr-museum",
-    year: "2025",
-    achievements: [
-      "Featured at VR Expo 2024",
-      "Used by 5 major museums",
-      "Best Educational VR Experience"
-    ]
+    title: 'VR Museum: Saudia Traveler',
+    category: 'Virtual Reality',
+    description:
+      'An interactive virtual museum where city names on a national map transform into detailed 3D models with curated cultural video.',
+    detail:
+      'Visitors explore Saudi Arabia from a virtual museum floor. Selecting a city name on the national map teleports them to that region and resolves it into a detailed 3D model, alongside curated cultural video covering the heritage and traditions of the area. Interaction is driven by the Media Framework and a custom interactive UI, with Lumen lighting to keep the museum interior readable across headset resolutions.',
+    youtubeId: 'vuym0t4S5wg',
+    thumbnail: '/VRMuseum.webp',
+    techStack: ['Unreal Engine 5', 'Blueprints', 'VR', 'Interactive UI', '3D Modeling', 'Media Framework', 'Lumen'],
+    year: '2025',
   },
   {
     id: 5,
-    title: "Paper Throw VR",
-    category: "Virtual Reality",
-    description: "A physics-driven VR paper toss game built in Unreal Engine 5 with real-time hand tracking, allowing players to crumple, aim, and throw paper balls using natural hand gestures - complete with dynamic scoring and responsive object interaction.",
-    videoUrl: "/PaperTossVR.mp4",
-    youtubeId: "nX3Ny2EdUxo",
-    thumbnail: "/PaperThrowVR.png",
-    techStack: ["Unreal Engine 5", "Blueprints", "VR", "Hand Tracking", "Physics", "Meta Quest"],
-    liveLink: "https://project-demo.com/procedural-world",
-    githubLink: "https://github.com/username/procedural-world",
-    year: "2025",
+    title: 'Paper Throw VR',
+    category: 'Virtual Reality',
+    description:
+      'A physics-driven VR paper toss game with real-time hand tracking and natural gesture-based input.',
+    detail:
+      'Players crumple, aim and throw paper balls using natural hand gestures. The interaction layer is driven by real-time hand tracking, feeding directly into the physics simulation so thrown objects behave believably rather than following a scripted arc. Includes dynamic scoring and responsive object interaction, with performance tuned to stay inside the standalone VR frame budget.',
+    youtubeId: 'nX3Ny2EdUxo',
+    thumbnail: '/PaperThrowVR.webp',
+    techStack: ['Unreal Engine 5', 'Blueprints', 'VR', 'Hand Tracking', 'Physics', 'Meta Quest'],
+    year: '2025',
     featured: true,
-    achievements: [
-      "Top 10 Asset Store - November 2024",
-      "5K+ active users",
-      "Integration with major game studios"
-    ]
   },
   {
     id: 6,
-    title: "ARena: Augmented Reality Games",
-    category: "Augmented Reality",
-    description: "A multi-game AR experience built in Unreal Engine 5 featuring target shooting, spatial puzzles, and object placement challenges - powered by real-time scoring systems and competitive leaderboards for an engaging augmented reality gameplay collection.",
-    videoUrl: "/AR.mp4",
-    youtubeId: "1ktUQXlomcE",
-    thumbnail: "/AR.jpg",
-    techStack: ["Unreal Engine 5", "Blueprints", "AR", "Spatial Detection", "Real-time Scoring", "Leaderboard", "Meta Quest"],
-    liveLink: "https://project-demo.com/particle-sim",
-    githubLink: "https://github.com/username/particle-sim",
-    year: "2024",
-    achievements: [
-      "VFX Award Nominee 2024",
-      "Used in 50+ game trailers",
-      "Featured in Unreal Engine Learning"
-    ]
+    title: 'ARena: Augmented Reality Games',
+    category: 'Augmented Reality',
+    description:
+      'A multi-game AR collection featuring target shooting, spatial puzzles and object placement, with live scoring and leaderboards.',
+    detail:
+      'A collection of augmented reality games sharing one progression and scoring backbone: target shooting, spatial puzzles and object placement challenges. Spatial detection anchors gameplay to the player environment, while a real-time scoring system and leaderboard infrastructure keep runs competitive across sessions. Built for mobile AR with Meta Quest as the primary target.',
+    youtubeId: '1ktUQXlomcE',
+    thumbnail: '/AR.webp',
+    techStack: ['Unreal Engine 5', 'Blueprints', 'AR', 'Spatial Detection', 'Real-time Scoring', 'Leaderboard'],
+    year: '2024',
   },
-    {
+  {
     id: 7,
-    title: "CarVerse: XR Configurator",
-    category: "XR Development",
-    description: "A high-fidelity XR vehicle configurator built in Unreal Engine 5, featuring real-time material and lighting systems for full exterior and interior customization, dynamic rim selection, and seamless environment switching across multiple showroom settings - accessible across both AR and VR platforms.",
-    videoUrl: "/XR_CarConfigurator.mp4",
-    youtubeId: "p08gXjn1Av8",
-    thumbnail: "/XR.jpg",
-    techStack: ["Unreal Engine 5", "Blueprints", "XR", "AR", "VR", "Lumen", "Datasmith", "Real-time Rendering"],
-    liveLink: "https://project-demo.com/particle-sim",
-    githubLink: "https://github.com/username/particle-sim",
-    year: "2024",
-    achievements: [
-      "VFX Award Nominee 2024",
-      "Used in 50+ game trailers",
-      "Featured in Unreal Engine Learning"
-    ]
+    title: 'CarVerse: XR Configurator',
+    category: 'XR Development',
+    description:
+      'A high-fidelity XR vehicle configurator with real-time material and lighting, running across both AR and VR.',
+    detail:
+      'An extension of the VR configurator into a unified XR build. Real-time material and lighting systems drive full exterior and interior customization, dynamic rim selection and environment switching across multiple showroom settings, and the same project ships to AR and VR so customers can configure on a desktop-scale display or in a headset without switching tools.',
+    youtubeId: 'p08gXjn1Av8',
+    thumbnail: '/XR.webp',
+    techStack: ['Unreal Engine 5', 'Blueprints', 'XR', 'AR', 'VR', 'Lumen', 'Datasmith'],
+    year: '2024',
   },
-    {
+  {
     id: 8,
-    title: "NeuralFire: AI Shooter Showcase",
-    category: "AI Development",
-    description: "A comprehensive AI combat showcase built in Unreal Engine 5 demonstrating production-ready NPC intelligence - featuring Behavior Tree architecture, EQS-driven spatial awareness, realistic patrol systems, precision shooting mechanics, and aggressive adaptive attack behaviors.",
-    videoUrl: "/TPS_AI.mp4",
-    youtubeId: "81rI5PSaSfs",
-    thumbnail: "/AIShooter.png",
-    techStack: ["Unreal Engine 5", "C++", "Blueprints", "Behavior Trees", "EQS", "AI Systems", "Combat AI"],
-    liveLink: "https://project-demo.com/particle-sim",
-    githubLink: "https://github.com/username/particle-sim",
-    year: "2024",
-    achievements: [
-      "VFX Award Nominee 2024",
-      "Used in 50+ game trailers",
-      "Featured in Unreal Engine Learning"
-    ]
+    title: 'NeuralFire: AI Shooter Showcase',
+    category: 'AI Development',
+    description:
+      'A production-ready AI combat showcase demonstrating Behaviour Tree architecture, EQS spatial awareness and adaptive attacks.',
+    detail:
+      'A combat AI reference implementation built around Behaviour Tree architecture with EQS-driven spatial awareness. Covers patrol routing, cover selection and precision shooting, with enemies that escalate behaviour as the encounter develops rather than switching state on a timer. The AI layer is separated from gameplay so the same framework could be reused across weapons, vehicles and companion actors.',
+    youtubeId: '81rI5PSaSfs',
+    thumbnail: '/AIShooter.webp',
+    techStack: ['Unreal Engine 5', 'C++', 'Blueprints', 'Behavior Trees', 'EQS', 'AI Systems', 'Combat AI'],
+    year: '2024',
   },
-    {
+  {
     id: 9,
-    title: "PaintballVR: Arena Combat",
-    category: "Virtual Reality",
-    description: "A comprehensive VR paintball game built in Unreal Engine 5 featuring multiple combat maps, three distinct game modes (timed, wave survival, one-life elimination), AI-driven opponents with Behavior Trees, a realistic shooting and ammo pickup system, and a fully interactive health and HUD widget system.",
-    videoUrl: "/PaintBallVR.mp4",
-    youtubeId: "iOGf72TZTBU",
-    thumbnail: "/PaintBallVR.jpg",
-    techStack: ["Unreal Engine 5", "C++", "Blueprints", "VR", "AI Systems", "Behavior Trees", "Meta Quest", "HUD"],
-    liveLink: "https://project-demo.com/particle-sim",
-    githubLink: "https://github.com/username/particle-sim",
-    year: "2026",
-    achievements: [
-      "VFX Award Nominee 2024",
-      "Used in 50+ game trailers",
-      "Featured in Unreal Engine Learning"
-    ]
-  }
+    title: 'PaintballVR: Arena Combat',
+    category: 'Virtual Reality',
+    description:
+      'A VR paintball game with multiple maps, three game modes, AI opponents and a full health and HUD system.',
+    detail:
+      'Three distinct game modes — timed, wave survival and one-life elimination — across multiple combat maps. Opponents are driven by Behaviour Trees rather than fixed patrol paths, so they respond to player positioning. The shooting and ammo pickup systems model reload and reserve ammunition separately, and the health and HUD widget layer is fully interactive in-world to keep the player looking forward instead of at a menu.',
+    youtubeId: 'iOGf72TZTBU',
+    thumbnail: '/PaintBallVR.webp',
+    techStack: ['Unreal Engine 5', 'C++', 'Blueprints', 'VR', 'AI Systems', 'Behavior Trees', 'HUD'],
+    year: '2026',
+  },
 ];

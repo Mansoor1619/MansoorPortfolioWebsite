@@ -1,117 +1,94 @@
-import React, { useEffect, useState, useRef } from 'react';
 import { Briefcase, Calendar } from 'lucide-react';
+import SectionHeading from './SectionHeading';
+import Reveal from './Reveal';
 
-const experienceData = [
+interface ExperienceEntry {
+  role: string;
+  company: string;
+  period: string;
+  bullets: string[];
+}
+
+const experienceData: ExperienceEntry[] = [
   {
-    role: "Unreal Engine Developer",
-    period: "October 2024 – Present",
-    company: "Mimar Studios, Islamabad, Pakistan",
+    role: 'Unreal Engine Developer',
+    company: 'Mimar Studios',
+    period: 'October 2024 – Present',
     bullets: [
-      "Architected and maintained scalable multiplayer gameplay systems supporting LAN and online sessions for 30+ concurrent players using Unreal replication and RPC frameworks.",
-      "Designed modular AI combat frameworks using Behavior Trees and EQS, supporting dynamic state-driven enemy and vehicle behaviors.",
-      "Developed extensible animation systems leveraging Control Rig, IK, and layered Animation Blueprints to support responsive combat and character movement.",
-      "Built high-fidelity VR combat mechanics including weapon handling, recoil simulation, reload systems, and hardware-synced feedback loops.",
-      "Profiled and optimized rendering, physics, and network performance, maintaining 72–90 FPS on Meta Quest 3 and reducing draw calls by ~30%.",
-      "Collaborated within a cross-functional team of 6–8 developers, delivering gameplay features across iterative production sprints.",
+      'Architected and maintained scalable multiplayer gameplay systems supporting LAN and online sessions for 30+ concurrent players using Unreal replication and RPC frameworks.',
+      'Designed modular AI combat frameworks using Behavior Trees and EQS, supporting dynamic state-driven enemy and vehicle behaviors.',
+      'Developed extensible animation systems leveraging Control Rig, IK, and layered Animation Blueprints to support responsive combat and character movement.',
+      'Built high-fidelity VR combat mechanics including weapon handling, recoil simulation, reload systems, and hardware-synced feedback loops.',
+      'Profiled and optimized rendering, physics, and network performance, maintaining 72–90 FPS on Meta Quest 3 and reducing draw calls by approximately 30%.',
+      'Collaborated within a cross-functional team of 6–8 developers, delivering gameplay features across iterative production sprints.',
     ],
   },
   {
-    role: "Unreal Engine Developer",
-    period: "June 2023 – October 2024",
-    company: "Algoryte, Islamabad, Pakistan",
+    role: 'Unreal Engine Developer',
+    company: 'Algoryte',
+    period: 'June 2023 – October 2024',
     bullets: [
-      "Led development of an interactive VR vehicle configurator featuring real-time material, mesh, and environment customization on Meta Quest 2.",
-      "Implemented gameplay interaction systems within pixel-streamed Unreal environments, enabling low-latency remote user interaction.",
-      "Designed AR gameplay systems including spatial detection, real-time spawning, progression tracking, and leaderboard infrastructure.",
-      "Integrated backend APIs for persistent player progression and live data synchronization across sessions.",
-      "Optimized assets and rendering pipelines to maintain stable 72 FPS on standalone VR hardware under performance constraints.",
+      'Led development of an interactive VR vehicle configurator featuring real-time material, mesh, and environment customization on Meta Quest 2.',
+      'Implemented gameplay interaction systems within pixel-streamed Unreal environments, enabling low-latency remote user interaction.',
+      'Designed AR gameplay systems including spatial detection, real-time spawning, progression tracking, and leaderboard infrastructure.',
+      'Integrated backend APIs for persistent player progression and live data synchronization across sessions.',
+      'Optimized assets and rendering pipelines to maintain stable 72 FPS on standalone VR hardware under performance constraints.',
     ],
   },
 ];
 
-const ExperienceEntry: React.FC<{ entry: typeof experienceData[0]; index: number }> = ({ entry, index }) => {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([el]) => { if (el.isIntersecting) { setTimeout(() => setVisible(true), index * 200); observer.disconnect(); } },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [index]);
-
+export default function Experience() {
   return (
-    <div
-      ref={ref}
-      className={`glass-card rounded-2xl p-6 md:p-8 transition-all duration-700 ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
-    >
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-4">
-        <div>
-          <h3 className="text-xl font-bold text-white mb-1">{entry.role}</h3>
-          <div className="flex items-center gap-2 text-gray-400 text-sm">
-            <Briefcase size={14} />
-            <span>{entry.company}</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 text-teal-400 text-sm font-medium whitespace-nowrap">
-          <Calendar size={14} />
-          <span>{entry.period}</span>
-        </div>
-      </div>
-      <ul className="space-y-3">
-        {entry.bullets.map((bullet, i) => (
-          <li key={i} className="flex items-start gap-3 text-gray-400 text-sm leading-relaxed">
-            <span className="w-1.5 h-1.5 rounded-full bg-teal-400 mt-2 flex-shrink-0" />
-            <span>{bullet}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
+    <section id="experience" className="relative bg-base py-24">
+      <div className="mx-auto max-w-6xl px-6 md:px-8">
+        <SectionHeading eyebrow="Career" title="Work experience" meta="2 studios" />
 
-const Experience: React.FC = () => {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+        <ol className="relative space-y-5 md:pl-9">
+          {/* rail + node, aligned to the card edge */}
+          <span
+            aria-hidden="true"
+            className="absolute top-2 bottom-2 left-[7px] w-px bg-line md:left-[7px]"
+          />
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([el]) => { if (el.isIntersecting) { setVisible(true); observer.disconnect(); } },
-      { threshold: 0.1 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
+          {experienceData.map((entry, i) => (
+            <li key={`${entry.company}-${entry.period}`} className="relative">
+              <span
+                aria-hidden="true"
+                className="absolute top-7 -left-[22px] hidden h-[9px] w-[9px] rounded-full bg-accent ring-4 ring-base md:block"
+              />
+              <Reveal delay={i * 110}>
+                <article className="rounded-[14px] border border-line bg-surface p-6 md:p-7">
+                  <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-6">
+                    <div>
+                      <h3 className="text-[21px] font-semibold tracking-[-0.015em] text-ink">
+                        {entry.role}
+                      </h3>
+                      <p className="mt-2 flex items-center gap-2 text-[15px] text-ink-3">
+                        <Briefcase size={13} className="text-accent" />
+                        {entry.company}
+                        <span className="text-ink-4">· Islamabad, Pakistan</span>
+                      </p>
+                    </div>
+                    <p className="flex shrink-0 items-center gap-2 font-mono text-[13px] whitespace-nowrap text-ink-2">
+                      <Calendar size={13} className="text-accent" />
+                      {entry.period}
+                    </p>
+                  </div>
 
-  return (
-    <section id="experience" className="relative py-24 bg-[#0a0a0a]">
-      <div className="absolute top-0 left-0 w-96 h-96 bg-teal-500/5 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-[120px] pointer-events-none"></div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
-        <div className={`text-center mb-16 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <span className="text-teal-400 text-sm font-medium tracking-widest uppercase mb-2 block">Career</span>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Work <span className="gradient-text">Experience</span>
-          </h2>
-          <div className="w-20 h-0.5 bg-gradient-to-r from-teal-400 to-blue-500 mx-auto rounded-full"></div>
-        </div>
-
-        <div className="relative">
-          <div className="absolute left-[21px] top-0 bottom-0 w-px bg-gradient-to-b from-teal-400/50 via-blue-500/30 to-transparent hidden md:block" />
-          <div className="space-y-8">
-            {experienceData.map((entry, i) => (
-              <ExperienceEntry key={i} entry={entry} index={i} />
-            ))}
-          </div>
-        </div>
+                  <ul className="space-y-2.5">
+                    {entry.bullets.map((bullet) => (
+                      <li key={bullet} className="flex gap-3 text-[15.5px] leading-[1.7] text-ink-3">
+                        <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-accent" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
-};
-
-export default Experience;
+}

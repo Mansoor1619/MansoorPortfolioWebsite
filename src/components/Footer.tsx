@@ -1,65 +1,65 @@
-import React from 'react';
-import { Heart, ArrowUp } from 'lucide-react';
-import { iconsData } from '../data/iconData';
+import { ArrowUp } from 'lucide-react';
 import { personalData } from '../data/personalData';
+import SocialLinks from './SocialLinks';
 
-const Footer: React.FC = () => {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+const QUICK_LINKS = [
+  { name: 'About', href: '#about' },
+  { name: 'Skills', href: '#skills' },
+  { name: 'Experience', href: '#experience' },
+  { name: 'Work', href: '#projects' },
+  { name: 'Contact', href: '#contact' },
+];
+
+export default function Footer() {
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-[#050505] border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Logo & Social */}
-          <div className="flex flex-col items-center md:items-start gap-4">
-            <h2 className="text-2xl font-bold gradient-text">Muhammad Mansoor</h2>
-            <p className="text-gray-500 text-sm text-center md:text-left max-w-xs">
-              Unreal Engine Developer crafting immersive experiences
+    <footer className="border-t border-line-soft bg-base">
+      <div className="mx-auto max-w-6xl px-6 py-14 md:px-8">
+        <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+          <div>
+            <p className="text-[19px] font-semibold tracking-[-0.015em] text-ink">
+              {personalData.name}
             </p>
-            <div className="flex gap-3">
-              {iconsData.slice(0, 5).map((social) => {
-                const url = personalData[social.id as keyof typeof personalData];
-                if (!url) return null;
-                return (
-                  <a key={social.id} href={`${social.url}${url}`} target="_blank" rel="noopener noreferrer"
-                    className="w-9 h-9 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 hover:border-teal-500/50 hover:bg-teal-500/10 transition-all duration-300 group">
-                    <img src={social.icon} alt={social.name}
-                      className="w-4 h-4 brightness-0 invert opacity-60 group-hover:opacity-100 transition-all duration-300" />
-                  </a>
-                );
-              })}
-            </div>
+            <p className="mt-2 max-w-[34ch] text-[15px] leading-[1.65] text-ink-4">
+              {personalData.title} — {personalData.location}
+            </p>
+
+            <SocialLinks variant="icons" className="mt-5 flex gap-2.5" />
           </div>
 
-          {/* Quick Links */}
-          <div className="flex flex-col items-center md:items-end gap-4">
-            <div className="flex gap-6">
-              {['Home', 'About', 'Skills', 'Projects', 'Contact'].map((link) => (
-                <a key={link} href={`#${link.toLowerCase()}`}
-                  className="text-gray-500 hover:text-teal-400 text-sm transition-colors duration-300">
-                  {link}
-                </a>
+          <nav aria-label="Footer">
+            <ul className="flex flex-wrap gap-x-6 gap-y-3">
+              {QUICK_LINKS.map((link) => (
+                <li key={link.name}>
+                  <a
+                    href={link.href}
+                    className="text-[15px] text-ink-4 transition-colors duration-200 hover:text-accent"
+                  >
+                    {link.name}
+                  </a>
+                </li>
               ))}
-            </div>
-            <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <Heart size={14} className="text-teal-400" />
-              <span>2025 Muhammad Mansoor. All rights reserved.</span>
-            </div>
-          </div>
+            </ul>
+          </nav>
+        </div>
+
+        <div className="mt-12 flex flex-col gap-3 border-t border-line-soft pt-6 text-[13.5px] text-ink-4 sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            © {year} {personalData.name}. All rights reserved.
+          </p>
+          <p className="font-mono">Built with React, Vite &amp; Tailwind CSS</p>
         </div>
       </div>
 
-      {/* Back to top */}
       <button
-        onClick={scrollToTop}
-        className="absolute -top-5 left-1/2 -translate-x-1/2 w-10 h-10 bg-gradient-to-r from-teal-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-teal-500/25 hover:scale-110 transition-all duration-300 cursor-pointer"
+        type="button"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="Back to top"
+        className="fixed right-6 bottom-6 z-40 grid h-10 w-10 place-items-center rounded-full border border-line bg-surface text-ink-2 transition-colors duration-200 hover:border-accent/50 hover:text-accent"
       >
-        <ArrowUp size={18} className="text-white" />
+        <ArrowUp size={17} />
       </button>
     </footer>
   );
-};
-
-export default Footer;
+}

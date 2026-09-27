@@ -1,21 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { Send, CheckCircle, Mail, MapPin, Phone } from 'lucide-react';
 import { personalData } from '../data/personalData';
+import SectionHeading from './SectionHeading';
+import Reveal from './Reveal';
 
-const Contact: React.FC = () => {
+export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,96 +16,131 @@ const Contact: React.FC = () => {
     setFormData({ name: '', email: '', message: '' });
   };
 
+  const channels = [
+    { icon: <Mail size={16} />, label: personalData.email, href: `mailto:${personalData.email}` },
+    { icon: <Phone size={16} />, label: personalData.phone, href: `tel:${personalData.phone.replace(/\s/g, '')}` },
+    { icon: <MapPin size={16} />, label: personalData.location },
+  ];
+
+  const fieldClass =
+    'w-full rounded-[10px] border border-line bg-surface-2 px-4 py-3.5 text-[15px] text-ink placeholder:text-ink-4 transition-colors duration-200 focus:border-accent/60 focus:outline-none';
+
   return (
-    <section id="contact" className="relative py-24 bg-[#0a0a0a]">
-      {/* Orbs */}
-      <div className="absolute top-1/2 left-0 w-80 h-80 bg-teal-500/5 rounded-full blur-[100px] pointer-events-none"></div>
-      <div className="absolute bottom-0 right-0 w-80 h-80 bg-blue-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+    <section id="contact" className="relative bg-base py-24">
+      <div className="mx-auto max-w-6xl px-6 md:px-8">
+        <SectionHeading
+          eyebrow="Contact"
+          title="Get in touch"
+          lede="Have a project in mind, or want to talk through a role? Send a message and I'll get back to you."
+        />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
-        <div className={`text-center mb-16 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <span className="text-teal-400 text-sm font-medium tracking-widest uppercase mb-2 block">Contact</span>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Get In <span className="gradient-text">Touch</span>
-          </h2>
-          <div className="w-20 h-0.5 bg-gradient-to-r from-teal-400 to-blue-500 mx-auto rounded-full"></div>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
-            Have a project in mind? Let's build something amazing together.
-          </p>
-        </div>
+        <div className="grid gap-6 md:grid-cols-2">
+          <Reveal delay={100}>
+            <ul className="space-y-3">
+              {channels.map((channel) => {
+                const inner = (
+                  <>
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[9px] bg-accent/10 text-accent">
+                      {channel.icon}
+                    </span>
+                    <span className="text-[15.5px] break-all text-ink-2">{channel.label}</span>
+                  </>
+                );
+                return (
+                  <li key={channel.label}>
+                    {channel.href ? (
+                      <a
+                        href={channel.href}
+                        className="flex items-center gap-4 rounded-[12px] border border-line bg-surface p-4 transition-colors duration-200 hover:border-accent/40"
+                      >
+                        {inner}
+                      </a>
+                    ) : (
+                      <div className="flex items-center gap-4 rounded-[12px] border border-line bg-surface p-4">
+                        {inner}
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </Reveal>
 
-        <div className="grid md:grid-cols-12 gap-8 max-w-4xl mx-auto">
-          {/* Info */}
-          <div className={`md:col-span-6 space-y-4 transition-all duration-700 delay-200 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            {[
-              { icon: <Mail size={16} />, label: personalData.email },
-              { icon: <Phone size={16} />, label: personalData.phone },
-              { icon: <MapPin size={16} />, label: personalData.location },
-            ].map((item, i) => (
-              <div key={i} className="glass-card rounded-xl p-5 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500/20 to-blue-500/20 flex items-center justify-center text-teal-400 flex-shrink-0">
-                  {item.icon}
-                </div>
-                <span className="text-gray-400 text-sm whitespace-nowrap overflow-hidden text-ellipsis">{item.label}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Form */}
-          <div className={`md:col-span-6 transition-all duration-700 delay-400 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <form onSubmit={handleSubmit} className="glass-card rounded-2xl p-6 md:p-8 space-y-5">
+          <Reveal delay={180}>
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-5 rounded-[14px] border border-line bg-surface p-6 md:p-7"
+            >
               <div>
-                <label htmlFor="name" className="block text-gray-400 text-sm mb-2">Name</label>
+                <label htmlFor="name" className="mb-2 block text-[14.5px] text-ink-2">
+                  Name
+                </label>
                 <input
                   type="text"
                   id="name"
+                  name="name"
+                  autoComplete="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 input-glass rounded-lg text-white placeholder-gray-600"
+                  className={fieldClass}
                   placeholder="Your name"
                   required
                 />
               </div>
+
               <div>
-                <label htmlFor="email" className="block text-gray-400 text-sm mb-2">Email</label>
+                <label htmlFor="email" className="mb-2 block text-[14.5px] text-ink-2">
+                  Email
+                </label>
                 <input
                   type="email"
                   id="email"
+                  name="email"
+                  autoComplete="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 input-glass rounded-lg text-white placeholder-gray-600"
+                  className={fieldClass}
                   placeholder="your@email.com"
                   required
                 />
               </div>
+
               <div>
-                <label htmlFor="message" className="block text-gray-400 text-sm mb-2">Message</label>
+                <label htmlFor="message" className="mb-2 block text-[14.5px] text-ink-2">
+                  Message
+                </label>
                 <textarea
                   id="message"
+                  name="message"
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 input-glass rounded-lg text-white placeholder-gray-600 resize-none"
+                  className={`${fieldClass} resize-none`}
                   placeholder="Tell me about your project..."
                   required
                 ></textarea>
               </div>
+
               <button
                 type="submit"
-                className="w-full py-3.5 bg-gradient-to-r from-teal-500 to-blue-600 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-teal-500/20 transform hover:scale-[1.02] transition-all duration-300 flex items-center justify-center"
+                className="flex w-full items-center justify-center gap-2 rounded-[10px] bg-accent px-5 py-4 text-[15px] font-semibold text-[#0b0b0c] transition-colors duration-200 hover:bg-accent-hi"
               >
                 {submitted ? (
-                  <><CheckCircle size={18} className="mr-2" /> Message Sent!</>
+                  <>
+                    <CheckCircle size={16} />
+                    Message Sent!
+                  </>
                 ) : (
-                  <><Send size={18} className="mr-2" /> Send Message</>
+                  <>
+                    <Send size={16} />
+                    Send Message
+                  </>
                 )}
               </button>
             </form>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>
   );
-};
-
-export default Contact;
+}
