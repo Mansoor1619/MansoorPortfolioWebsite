@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import FeaturedProduct from './components/FeaturedProduct';
 import About from './components/About';
 import Skills from './components/Skills';
 import Experience from './components/Experience';
@@ -21,6 +22,7 @@ export default function App() {
 
       <main id="main">
         <Hero />
+        <FeaturedProduct />
         <About />
         <Skills />
         <Experience />

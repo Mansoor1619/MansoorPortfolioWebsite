@@ -3,6 +3,7 @@ import { Menu, X } from 'lucide-react';
 import { personalData } from '../data/personalData';
 
 const NAV_LINKS = [
+  { name: 'Paintball VR', href: '#product' },
   { name: 'About', href: '#about' },
   { name: 'Skills', href: '#skills' },
   { name: 'Experience', href: '#experience' },
@@ -10,7 +11,7 @@ const NAV_LINKS = [
   { name: 'Contact', href: '#contact' },
 ];
 
-const SECTION_IDS = ['home', 'about', 'skills', 'experience', 'projects', 'contact'];
+const SECTION_IDS = ['home', 'product', 'about', 'skills', 'experience', 'projects', 'contact'];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
