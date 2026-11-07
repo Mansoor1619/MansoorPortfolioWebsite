@@ -133,4 +133,17 @@ export const projectsData: Project[] = [
     techStack: ['Unreal Engine 5', 'C++', 'Blueprints', 'VR', 'AI Systems', 'Behavior Trees', 'HUD'],
     year: '2026',
   },
+  {
+    id: 10,
+    title: 'Tennis VR',
+    category: 'Virtual Reality',
+    description:
+      'A VR tennis experience with motion-controlled serving, racket interactions and three AI opponents, set on a court against a city skyline.',
+    detail:
+      'Built in Unreal Engine, Tennis VR brings motion-controlled serving and racket interactions to a city-skyline tennis court. Players can face three AI opponents with different difficulty levels, with match scoring and results completing the gameplay experience.',
+    youtubeId: '_HmhHMIbhyk',
+    thumbnail: '/TennisVR.webp',
+    techStack: ['Unreal Engine', 'VR', 'Motion Controls', 'AI Opponents'],
+    year: '2026',
+  },
 ];
