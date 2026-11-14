@@ -36,3 +36,27 @@ export const featuredProductData: FeaturedProduct = {
   techStack: ['Unreal Engine 5', 'C++', 'Blueprints', 'VR', 'Behaviour Trees', 'HUD'],
   platforms: ['Meta Quest 2', 'Quest 3', 'Quest Pro'],
 };
+
+export const featuredProductsData: FeaturedProduct[] = [
+  featuredProductData,
+  {
+    name: 'Baseline Clash: Tennis VR',
+    eyebrow: 'Published · Meta Horizon Store',
+    storeName: 'Meta Horizon Store',
+    tagline: 'Step onto the court. Take on the challenge.',
+    description:
+      'Published on the Meta Horizon Store, Baseline Clash: Tennis VR brings motion-controlled serving and racket interactions to a tennis court set against a city skyline. Face three AI opponents with different difficulty levels, track match scores and review your results.',
+    storeUrl: 'https://www.meta.com/experiences/baseline-clash-tennis-vr/1318241681382713/',
+    trailerUrl: 'https://www.youtube.com/watch?v=_HmhHMIbhyk',
+    trailerYoutubeId: '_HmhHMIbhyk',
+    thumbnail: '/TennisVR.webp',
+    highlights: [
+      { label: 'AI opponents', value: '3' },
+      { label: 'Controls', value: 'Motion' },
+      { label: 'Matches', value: 'Scored' },
+      { label: 'Setting', value: 'City skyline' },
+    ],
+    techStack: ['Unreal Engine', 'VR', 'Motion Controls', 'AI Opponents'],
+    platforms: [],
+  },
+];

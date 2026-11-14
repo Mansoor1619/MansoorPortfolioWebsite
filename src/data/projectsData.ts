@@ -135,10 +135,10 @@ export const projectsData: Project[] = [
   },
   {
     id: 10,
-    title: 'Tennis VR',
+    title: 'Baseline Clash: Tennis VR',
     category: 'Virtual Reality',
     description:
-      'A VR tennis experience with motion-controlled serving, racket interactions and three AI opponents, set on a court against a city skyline.',
+      'Published on the Meta Horizon Store: a VR tennis experience with motion-controlled serving, racket interactions and three AI opponents, set against a city skyline.',
     detail:
       'Built in Unreal Engine, Tennis VR brings motion-controlled serving and racket interactions to a city-skyline tennis court. Players can face three AI opponents with different difficulty levels, with match scoring and results completing the gameplay experience.',
     youtubeId: '_HmhHMIbhyk',

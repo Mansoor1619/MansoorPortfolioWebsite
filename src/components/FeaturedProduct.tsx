@@ -1,14 +1,16 @@
 import { Play, ArrowUpRight, BadgeCheck } from 'lucide-react';
-import { featuredProductData } from '../data/featuredProductData';
+import { featuredProductsData } from '../data/featuredProductData';
 import Reveal from './Reveal';
+import SectionHeading from './SectionHeading';
 
 export default function FeaturedProduct() {
-  const p = featuredProductData;
-
   return (
     <section id="product" className="relative bg-base py-24">
       <div className="mx-auto max-w-6xl px-6 md:px-8">
-        <Reveal>
+        <SectionHeading eyebrow="My products" title="Published VR games" />
+        <div className="space-y-8">
+        {featuredProductsData.map((p) => (
+        <Reveal key={p.storeUrl}>
           <div className="grid overflow-hidden rounded-[16px] border border-line bg-surface lg:grid-cols-2">
             {/* ---------- media panel ---------- */}
             <div className="relative min-h-[280px] lg:min-h-full">
@@ -39,9 +41,9 @@ export default function FeaturedProduct() {
                 <span className="mb-4 block font-mono text-[12px] tracking-[0.16em] text-accent uppercase">
                   {p.eyebrow}
                 </span>
-                <h2 className="text-[34px] leading-[1.05] font-bold tracking-[-0.03em] text-ink sm:text-[42px]">
+                <h3 className="text-[34px] leading-[1.05] font-bold tracking-[-0.03em] text-ink sm:text-[42px]">
                   {p.name}
-                </h2>
+                </h3>
                 <p className="mt-3 text-[17px] leading-[1.5] font-medium text-ink-2">
                   {p.tagline}
                 </p>
@@ -99,6 +101,8 @@ export default function FeaturedProduct() {
             </div>
           </div>
         </Reveal>
+        ))}
+        </div>
       </div>
     </section>
   );

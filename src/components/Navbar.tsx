@@ -3,7 +3,7 @@ import { Menu, X } from 'lucide-react';
 import { personalData } from '../data/personalData';
 
 const NAV_LINKS = [
-  { name: 'Paintball VR', href: '#product' },
+  { name: 'My Products', href: '#product' },
   { name: 'About', href: '#about' },
   { name: 'Skills', href: '#skills' },
   { name: 'Experience', href: '#experience' },
